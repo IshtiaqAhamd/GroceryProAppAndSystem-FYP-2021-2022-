@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "517476599482",
+    "project_id": "grocery-pro-app-and-system",
+    "storage_bucket": "grocery-pro-app-and-system.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:517476599482:android:b0c436005395d27bdc2483",
+        "android_client_info": {
+          "package_name": "pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "517476599482-d4lnnnh1cf0fgfetodjaae9m6dsb7mqa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_dnOAUlVgHlba-gCOqziTAVurJREweSY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "517476599482-d4lnnnh1cf0fgfetodjaae9m6dsb7mqa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
