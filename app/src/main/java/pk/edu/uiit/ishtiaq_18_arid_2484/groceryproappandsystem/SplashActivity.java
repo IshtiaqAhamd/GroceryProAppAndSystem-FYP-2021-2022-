@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
+    // Declaring Splash Activity UI Views
     ImageView splashImage;
 
     @Override

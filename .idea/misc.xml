@@ -3,7 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/drawable/ic_key_gray.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/drawable/ic_key_white.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/drawable/ic_mail_gray.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/drawable/shape_circle01.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/drawable/shape_rect01.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/drawable/shape_rect02.xml" value="0.20260416666666667" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_forgot_password.xml" value="0.2" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_main.xml" value="0.17239583333333333" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_register_seller.xml" value="0.18645833333333334" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_register_user.xml" value="0.22" />
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_splash.xml" value="0.18645833333333334" />
       </map>
     </option>

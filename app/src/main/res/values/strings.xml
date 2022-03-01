@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Grocery Pro App And System</string>
+    <string name="login">Login</string>
 </resources>
