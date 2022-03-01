@@ -7,11 +7,23 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SplashActivity extends AppCompatActivity {
     // Declaring Splash Activity UI Views
     ImageView splashImage;
+
+    // FirebaseAuth
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,15 +37,58 @@ public class SplashActivity extends AppCompatActivity {
         // Start Login Activity After 4 Seconds
         splashImage = findViewById(R.id.splashIcon);
         splashImage.animate().scaleX(1.5f).scaleY(1.5f).setDuration(3000);
+
+        // Initialization Of FirebaseAuth
+        firebaseAuth = FirebaseAuth.getInstance();
+
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user==null)
+                {
+                    // User Not Logged In Start Login Activity
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    finish();
+                }
+                else
+                {
+                    // User Is Logger in, Check User Type
+                    checkUserType();
+                }
             }
         },4000);
+    }
+    private void checkUserType() {
+        //If User Is Seller, Start Main Seller Activity
+        //If User Is Buyer, start Main User Activity
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.orderByChild("uid").equalTo(firebaseAuth.getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            String accountType = ""+ds.child("accountType").getValue();
+                            if (accountType.equals("Seller"))
+                            {
+                                // User Is Seller
+                                startActivity(new Intent(SplashActivity.this, MainSellerActivity.class));
+                                finish();
+                            }
+                            else
+                            {
+                                // User Is Buyer
+                                startActivity(new Intent(SplashActivity.this, MainUserActivity.class));
+                                finish();
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 }

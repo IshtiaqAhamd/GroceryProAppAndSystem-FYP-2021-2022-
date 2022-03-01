@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroceryProAppAndSystem.NoActionBar">
         <activity
+            android:name=".MainUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainSellerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgotPasswordActivity"
             android:exported="false" />
         <activity
@@ -27,8 +33,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
-        <!-- (SplashActivity) My First Launcher Activity -->
+            android:exported="false" /> <!-- (SplashActivity) My First Launcher Activity -->
         <activity
             android:name=".SplashActivity"
             android:exported="true">
