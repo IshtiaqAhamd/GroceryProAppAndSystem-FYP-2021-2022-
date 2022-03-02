@@ -26,7 +26,7 @@ import java.util.HashMap;
 public class MainUserActivity extends AppCompatActivity {
     // Declaring Main User Activity UI Views
     TextView nameTv;
-    ImageButton logoutBtn;
+    ImageButton logoutBtn, editProfileBtn;
 
     // FirebaseAuth
     private FirebaseAuth firebaseAuth;
@@ -47,6 +47,7 @@ public class MainUserActivity extends AppCompatActivity {
         // Initialization Of Views
         nameTv = findViewById(R.id.nameTv);
         logoutBtn = findViewById(R.id.logoutBtn);
+        editProfileBtn = findViewById(R.id.editProfileBtn);
 
         // Initialization Of FirebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
@@ -69,7 +70,13 @@ public class MainUserActivity extends AppCompatActivity {
                 makeMeOffline();
             }
         });
-
+        editProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Open Profile Edit Activity For User
+                startActivity(new Intent(MainUserActivity.this, ProfileEditUserActivity.class));
+            }
+        });
     }
 
     private void checkUser() {

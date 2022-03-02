@@ -26,7 +26,7 @@ import java.util.HashMap;
 public class MainSellerActivity extends AppCompatActivity {
     // Declaring Main Seller Activity UI Views
     TextView nameTv;
-    ImageButton logoutBtn;
+    ImageButton logoutBtn, editProfileBtn;
 
     // FirebaseAuth
     private FirebaseAuth firebaseAuth;
@@ -48,16 +48,16 @@ public class MainSellerActivity extends AppCompatActivity {
         // Initialization Of Views
         nameTv = findViewById(R.id.nameTv);
         logoutBtn = findViewById(R.id.logoutBtn);
+        editProfileBtn = findViewById(R.id.editProfileBtn);
 
         // Initialization Of FirebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
+        checkUser();
 
         // Initialization Of Progress Dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait...");
         progressDialog.setCanceledOnTouchOutside(false);
-
-        checkUser();
     }
 
     // UI Views Performance Actions
@@ -72,6 +72,13 @@ public class MainSellerActivity extends AppCompatActivity {
             }
         });
 
+        editProfileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Open Profile Edit Activity For Seller
+                startActivity(new Intent(MainSellerActivity.this, ProfileEditSellerActivity.class));
+            }
+        });
     }
 
     private void checkUser() {
