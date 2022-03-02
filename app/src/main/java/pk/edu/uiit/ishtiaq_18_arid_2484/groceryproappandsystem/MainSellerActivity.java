@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,13 +21,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
 public class MainSellerActivity extends AppCompatActivity {
     // Declaring Main Seller Activity UI Views
-    TextView nameTv;
-    ImageButton logoutBtn, editProfileBtn;
+    TextView nameTv, shopNameTv,emailTv;
+    ImageButton logoutBtn, editProfileBtn, addProductBtn;
+    ImageView profileIv;
 
     // FirebaseAuth
     private FirebaseAuth firebaseAuth;
@@ -47,8 +50,12 @@ public class MainSellerActivity extends AppCompatActivity {
     public void ViewsInitialization() {
         // Initialization Of Views
         nameTv = findViewById(R.id.nameTv);
+        shopNameTv = findViewById(R.id.shopNameTv);
+        emailTv = findViewById(R.id.emailTv);
+        addProductBtn = findViewById(R.id.addProductBtn);
         logoutBtn = findViewById(R.id.logoutBtn);
         editProfileBtn = findViewById(R.id.editProfileBtn);
+        profileIv = findViewById(R.id.profileIv);
 
         // Initialization Of FirebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
@@ -79,6 +86,13 @@ public class MainSellerActivity extends AppCompatActivity {
                 startActivity(new Intent(MainSellerActivity.this, ProfileEditSellerActivity.class));
             }
         });
+        addProductBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Open Add Product Activity For Seller
+                startActivity(new Intent(MainSellerActivity.this, AddProductActivity.class));
+            }
+        });
     }
 
     private void checkUser() {
@@ -101,21 +115,23 @@ public class MainSellerActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for(DataSnapshot ds: snapshot.getChildren()){
-                            //String ProfileImage = ""+ds.child("Profile Image").getValue();
+                            // Get Data From Database (Firebase)
                             String name = ""+ds.child("name").getValue();
-                            //String ShopName = ""+ds.child("Shop Name").getValue();
-                            //String SellerEmail = ""+ds.child("Email Address").getValue();
+                            String email = ""+ds.child("email").getValue();
+                            String shopName = ""+ds.child("shopName").getValue();
+                            String profileImage = ""+ds.child("profileImage").getValue();
                             String accountType = ""+ds.child("accountType").getValue();
 
+                            // Set Data To Main Seller Activity Views
                             nameTv.setText(name+"("+accountType+")");
-                            //shopName.setText(ShopName);
-                            //sellerEmail.setText(SellerEmail);
-//                            try {
-//                                Picasso.get().load(ProfileImage).placeholder(R.drawable.ic_store_gray).into(sellerProfile);
-//                            }catch (Exception epx)
-//                            {
-//                                sellerProfile.setImageResource(R.drawable.ic_store_gray);
-//                            }
+                            emailTv.setText(email);
+                            shopNameTv.setText(shopName);
+                            try {
+                                Picasso.get().load(profileImage).placeholder(R.drawable.ic_store_gray).into(profileIv);
+                            }
+                            catch (Exception exception){
+                                profileIv.setImageResource(R.drawable.ic_store_gray);
+                            }
                         }
                     }
                     @Override
