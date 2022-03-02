@@ -6,7 +6,26 @@ public class Constants {
             "Beverages",
             "Beauty & Personal Care",
             "Baby Kids",
-            "Biscuits Snacks & Chocolates",
+            "Biscuits Snacks & Ch9ocolates",
+            "Breakfast & Dairy",
+            "Cooking Needs",
+            "Frozen Food",
+            "Fruits",
+            "Pet Cate",
+            "Pharmacy",
+            "Vegetables",
+            "Electronic Devices",
+            "Home Appliances",
+            "Furniture",
+            "Others"
+    };
+
+    public static final String[] productCategories1 = {
+            "All",
+            "Beverages",
+            "Beauty & Personal Care",
+            "Baby Kids",
+            "Biscuits Snacks & Ch9ocolates",
             "Breakfast & Dairy",
             "Cooking Needs",
             "Frozen Food",

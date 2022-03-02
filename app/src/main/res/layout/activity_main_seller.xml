@@ -8,18 +8,19 @@
 
     <!--My Custom Toolbar-->
     <RelativeLayout
+        android:id="@+id/toolbarRl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_rect01"
         android:padding="10dp">
-
         <ImageButton
             android:id="@+id/logoutBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:background="@null"
-            android:src="@drawable/ic_logout_white"></ImageButton>
+            android:src="@drawable/ic_logout_white">
+        </ImageButton>
 
         <ImageButton
             android:id="@+id/editProfileBtn"
@@ -55,8 +56,8 @@
             android:layout_marginTop="30dp"
             android:layout_toEndOf="@id/profileIv"
             android:text="Name"
-            android:textSize="18sp"
             android:textColor="@color/colorWhite"
+            android:textSize="18sp"
             android:textStyle="bold"></TextView>
 
         <TextView
@@ -73,11 +74,95 @@
             android:id="@+id/emailTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/profileIv"
             android:layout_below="@id/shopNameTv"
+            android:layout_toEndOf="@id/profileIv"
             android:text="Email"
-            android:textColor="@color/colorWhite">
-        </TextView>
+            android:textColor="@color/colorWhite"></TextView>
+        <!--Tabs: Products, Orders-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/profileIv"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/shape_rect03"
+            android:orientation="horizontal">
+            <!--Products-->
+            <TextView
+                android:id="@+id/tabProductsTv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rect04"
+                android:gravity="center"
+                android:text="Products"
+                android:textColor="@color/colorBlack"></TextView>
+            <!--Orders-->
+            <TextView
+                android:id="@+id/tabOrdersTv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Orders"
+                android:textColor="@color/colorWhite"></TextView>
+
+        </LinearLayout>
     </RelativeLayout>
+
+    <!-- Products -->
+    <RelativeLayout
+        android:id="@+id/productsRl"
+        android:layout_below="@id/toolbarRl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- SearchView-->
+        <EditText
+            android:id="@+id/searchProductEt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/shape_rect02"
+            android:drawableStart="@drawable/ic_search_gray"
+            android:layout_toStartOf="@id/filterProductBtn"
+            android:padding="10dp"
+            android:hint="Search"/>
+        <!-- Filtered-->
+        <ImageButton
+            android:id="@+id/filterProductBtn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_filter_gray"/>
+        <!-- Show Filtered Product Title -->
+        <TextView
+            android:id="@+id/filteredProductsTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchProductEt"
+            android:textColor="@color/colorBlack"
+            android:text="Showing All"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="5dp"/>
+
+        <!-- RecyclerView: Show Products-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/productsRv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/filteredProductsTv"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/row_product_seller"/>
+    </RelativeLayout>
+
+    <!-- Orders -->
+    <RelativeLayout
+        android:id="@+id/ordersRl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbarRl"></RelativeLayout>
 
 </RelativeLayout>
