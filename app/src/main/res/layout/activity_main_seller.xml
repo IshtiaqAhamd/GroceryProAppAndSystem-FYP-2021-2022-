@@ -31,12 +31,12 @@
             android:src="@drawable/ic_edit_white"></ImageButton>
         <!-- Add Product-->
         <ImageButton
-            android:id="@+id/addProductBtn"
+            android:id="@+id/updateProductBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_toStartOf="@id/editProfileBtn"
             android:background="@null"
-            android:src="@drawable/icadd_shopping_white"></ImageButton>
+            android:src="@drawable/ic_add_shopping_white"></ImageButton>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileIv"

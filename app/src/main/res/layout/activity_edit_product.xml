@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="AddProductActivity">
+    tools:context=".EditProductActivity">
     <!--My Custom Toolbar-->
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,15 +19,15 @@
             android:layout_height="30dp"
             android:background="@null"
             android:src="@drawable/ic_back_white"></ImageButton>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Add Product"
+            android:text="Update Product"
             android:textColor="@color/colorWhite"
             android:textSize="20sp"
-            android:textStyle="bold">
-        </TextView>
+            android:textStyle="bold"></TextView>
     </RelativeLayout>
 
     <!--Form To Input Data-->
@@ -179,6 +179,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:minWidth="150dp"
-            android:text="Add Product"></Button>
+            android:text="Update Product"></Button>
     </RelativeLayout>
 </LinearLayout>

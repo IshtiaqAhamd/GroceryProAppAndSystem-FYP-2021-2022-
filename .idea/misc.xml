@@ -12,7 +12,8 @@
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/drawable/shape_rect03.xml" value="0.21927083333333333" />
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/drawable/shape_rect04.xml" value="0.21927083333333333" />
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/drawable/shape_rect05.xml" value="0.21927083333333333" />
-        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_add_product.xml" value="0.1" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_add_product.xml" value="0.22" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_edit_product.xml" value="0.203125" />
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_forgot_password.xml" value="0.2" />
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_main.xml" value="0.17239583333333333" />
@@ -23,6 +24,7 @@
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_register_seller.xml" value="0.18645833333333334" />
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_register_user.xml" value="0.22" />
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/activity_splash.xml" value="0.18645833333333334" />
+        <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/bs_product_details_seller.xml" value="0.203125" />
         <entry key="..\:/Users/Nexgen/AndroidStudioProjects/GroceryProAppAndSystem/app/src/main/res/layout/row_product_seller.xml" value="0.203125" />
       </map>
     </option>
