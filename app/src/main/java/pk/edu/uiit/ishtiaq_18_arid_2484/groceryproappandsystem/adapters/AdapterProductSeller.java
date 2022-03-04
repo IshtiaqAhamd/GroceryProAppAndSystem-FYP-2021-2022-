@@ -1,4 +1,4 @@
-package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem;
+package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +27,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.FilterProduct;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.activities.EditProductActivity;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelProduct;
 
 public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSeller.HolderProductSeller> implements Filterable {
 

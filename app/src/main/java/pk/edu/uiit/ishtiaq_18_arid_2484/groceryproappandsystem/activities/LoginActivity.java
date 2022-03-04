@@ -1,4 +1,4 @@
-package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem;
+package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
 
 public class LoginActivity extends AppCompatActivity {
     // Declaring Login Activity UI Views

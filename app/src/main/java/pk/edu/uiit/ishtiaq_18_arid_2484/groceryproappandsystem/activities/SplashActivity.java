@@ -1,4 +1,4 @@
-package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem;
+package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
 
 public class SplashActivity extends AppCompatActivity {
     // Declaring Splash Activity UI Views
@@ -64,24 +66,22 @@ public class SplashActivity extends AppCompatActivity {
         //If User Is Seller, Start Main Seller Activity
         //If User Is Buyer, start Main User Activity
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.orderByChild("uid").equalTo(firebaseAuth.getUid())
+        reference.child(firebaseAuth.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot ds: snapshot.getChildren()){
-                            String accountType = ""+ds.child("accountType").getValue();
-                            if (accountType.equals("Seller"))
-                            {
-                                // User Is Seller
-                                startActivity(new Intent(SplashActivity.this, MainSellerActivity.class));
-                                finish();
-                            }
-                            else
-                            {
-                                // User Is Buyer
-                                startActivity(new Intent(SplashActivity.this, MainUserActivity.class));
-                                finish();
-                            }
+                        String accountType = ""+snapshot.child("accountType").getValue();
+                        if (accountType.equals("Seller"))
+                        {
+                            // User Is Seller
+                            startActivity(new Intent(SplashActivity.this, MainSellerActivity.class));
+                            finish();
+                        }
+                        else
+                        {
+                            // User Is Buyer
+                            startActivity(new Intent(SplashActivity.this, MainUserActivity.class));
+                            finish();
                         }
                     }
 

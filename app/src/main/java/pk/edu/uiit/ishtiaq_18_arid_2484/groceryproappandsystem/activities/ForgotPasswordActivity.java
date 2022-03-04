@@ -1,4 +1,4 @@
-package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem;
+package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.activities;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
 
 public class ForgotPasswordActivity extends AppCompatActivity {
     // Declaring Forgot Password Activity UI Views

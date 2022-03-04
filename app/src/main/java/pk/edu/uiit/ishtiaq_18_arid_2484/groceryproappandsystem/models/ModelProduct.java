@@ -1,4 +1,4 @@
-package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem;
+package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models;
 
 public class ModelProduct {
     private String productID, productTitle, productDescription, productCategory, productQuantity, productIcon,

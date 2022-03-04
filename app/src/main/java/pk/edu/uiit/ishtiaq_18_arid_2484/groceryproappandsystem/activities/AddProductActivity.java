@@ -1,4 +1,4 @@
-package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem;
+package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.activities;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -31,28 +31,25 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 
-public class EditProductActivity extends AppCompatActivity {
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.Constants;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
+
+public class AddProductActivity extends AppCompatActivity {
     // Declaring Add Product Activity UI Views
     ImageButton backBtn;
     ImageView productIconIv;
     EditText titleEt, descriptionEt, quantityEt, priceEt, discountPriceEt, discountNoteEt;
     TextView categoryTv;
     SwitchCompat discountSwitch;
-    Button updateProductBtn;
-    // From Intent Extra String
-    String productId;
+    Button addProductBtn;
 
     // Permission Constant
     private static final int CAMERA_REQUEST_CODE = 200;
@@ -78,8 +75,7 @@ public class EditProductActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_product);
-
+        setContentView(R.layout.activity_add_product);
         ViewsInitialization();
         ViewsPerformanceActions();
     }
@@ -96,10 +92,7 @@ public class EditProductActivity extends AppCompatActivity {
         discountNoteEt = findViewById(R.id.discountNoteEt);
         categoryTv = findViewById(R.id.categoryTv);
         discountSwitch = findViewById(R.id.discountSwitch);
-        updateProductBtn = findViewById(R.id.updateProductBtn);
-
-        // Get id Of The Product From Intent
-        productId = getIntent().getStringExtra("productId");
+        addProductBtn = findViewById(R.id.updateProductBtn);
 
         // UnChecked, Hide Product Discount Price, Product Discount Note
         discountPriceEt.setVisibility(View.GONE);
@@ -111,8 +104,6 @@ public class EditProductActivity extends AppCompatActivity {
 
         // Initialization Of FirebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
-
-        loadProductDetails(); // To Set On Views
 
         // Initialization Of Progress Dialog
         progressDialog = new ProgressDialog(this);
@@ -144,7 +135,7 @@ public class EditProductActivity extends AppCompatActivity {
                 {
                     // Checked, Show Product Discount Price, Product Discount Note
                     discountPriceEt.setVisibility(View.VISIBLE);
-                    discountNoteEt.setVisibility(View.VISIBLE);
+                   discountNoteEt.setVisibility(View.VISIBLE);
                 }
                 else
                 {
@@ -154,13 +145,13 @@ public class EditProductActivity extends AppCompatActivity {
                 }
             }
         });
-        updateProductBtn.setOnClickListener(new View.OnClickListener() {
+        addProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /*  Flow:
                     1) Input Data
                     2) Validate Data
-                    3) Update Data to Database (Firebase)
+                    3) Add Data to Database (Firebase)
                 */
                 inputData();
             }
@@ -174,63 +165,21 @@ public class EditProductActivity extends AppCompatActivity {
         });
     }
 
-    private void loadProductDetails() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(firebaseAuth.getUid()).child("Products").child(productId)
-                .addValueEventListener(new ValueEventListener() {
+    private void categoryDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Product Category")
+                .setItems(Constants.productCategories, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        // Get Data
-                        String productID = ""+snapshot.child("productID").getValue();
-                        String productTitle = ""+snapshot.child("productTitle").getValue();
-                        String productDescription = ""+snapshot.child("productDescription").getValue();
-                        String productCategory = ""+snapshot.child("productCategory").getValue();
-                        String productQuantity = ""+snapshot.child("productQuantity").getValue();
-                        String productIcon = ""+snapshot.child("productIcon").getValue();
-                        String originalPrice = ""+snapshot.child("originalPrice").getValue();
-                        String discountPrice = ""+snapshot.child("discountPrice").getValue();
-                        String discountNote = ""+snapshot.child("discountNote").getValue();
-                        String discountAvailable = ""+snapshot.child("discountAvailable").getValue();
-                        String timestamp = ""+snapshot.child("timestamp").getValue();
-                        String uid = ""+snapshot.child("uid").getValue();
+                    public void onClick(DialogInterface dialog, int which) {
 
-                        //Set Data To Views
-                        if (discountAvailable.equals("true")){
+                        //Get Picked Category
+                        String Categories = Constants.productCategories[which];
 
-                            discountSwitch.setChecked(true);
-
-                            discountPriceEt.setVisibility(View.VISIBLE);
-                            discountNoteEt.setVisibility(View.VISIBLE);
-                        }
-                        else {
-
-                            discountSwitch.setChecked(false);
-
-                            discountPriceEt.setVisibility(View.GONE);
-                            discountNoteEt.setVisibility(View.GONE);
-                        }
-                        titleEt.setText(productTitle);
-                        descriptionEt.setText(productDescription);
-                        categoryTv.setText(productCategory);
-                        discountNoteEt.setText(discountNote);
-                        quantityEt.setText(productQuantity);
-                        priceEt.setText(originalPrice);
-                        discountPriceEt.setText(discountPrice);
-                        try
-                        {
-                            Picasso.get().load(productIcon).placeholder(R.drawable.ic_add_shopping_white).into(productIconIv);
-                        }
-                        catch (Exception e)
-                        {
-                            productIconIv.setImageResource(R.drawable.ic_add_shopping_white);
-                        }
+                        //Set Picked Category
+                        categoryTv.setText(Categories);
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                })
+                .show();
     }
 
     String productTitle, productDescription, productCategory, productQuantity, originalPrice, discountPrice, discountNote;
@@ -285,98 +234,111 @@ public class EditProductActivity extends AppCompatActivity {
             discountPrice = "0";
             discountNote = "";
         }
-        updateProduct();
+        addProduct();
     }
-
-    private void updateProduct() {
-        // Show Progress
-        progressDialog.setMessage("Updating Product...");
+    private void addProduct() {
+        // 3) Add Data to DB
+        progressDialog.setMessage("Adding Product....");
         progressDialog.show();
+        String timestamp = ""+System.currentTimeMillis();
 
-        if (image_uri==null){
-            //Update Without Image
-            //Setup Data to Update
+        if (image_uri==null)
+        {
+            //Upload Without Image
+            //Setup Data To Upload
             HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("productTitle", "" + productTitle);
-            hashMap.put("productDescription", "" + productDescription);
-            hashMap.put("productCategory", "" + productCategory);
-            hashMap.put("productQuantity", "" + productQuantity);
-            hashMap.put("originalPrice", "" + originalPrice);
-            hashMap.put("discountPrice", "" + discountPrice);
-            hashMap.put("discountNote", "" + discountNote);
-            hashMap.put("discountAvailable", "" + discountAvailable);
+            hashMap.put("productID",""+timestamp);
+            hashMap.put("productTitle",""+productTitle);
+            hashMap.put("productDescription", ""+productDescription);
+            hashMap.put("productCategory", ""+productCategory);
+            hashMap.put("productQuantity", ""+productQuantity);
+            hashMap.put("productIcon", ""); // No Image, Set Empty
+            hashMap.put("originalPrice", ""+originalPrice);
+            hashMap.put("discountPrice", ""+discountPrice);
+            hashMap.put("discountNote", ""+discountNote);
+            hashMap.put("discountAvailable", ""+discountAvailable);
+            hashMap.put("timestamp", ""+timestamp);
+            hashMap.put("uid", ""+firebaseAuth.getUid());
 
-            //Update to DB
+            //Add to Database (Firebase)
             DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-            reference.child(firebaseAuth.getUid()).child("Products").child(productId)
-                    .updateChildren(hashMap)
+            reference.child(firebaseAuth.getUid())
+                    .child("Products").child(timestamp).setValue(hashMap)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            // Updated Success
+                            //Added to  DB
                             progressDialog.dismiss();
-                            Toast.makeText(EditProductActivity.this, "Updated Product", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddProductActivity.this, "Product Added", Toast.LENGTH_SHORT).show();
+                            clearData();
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            //Failed to Update
+                            //Failed adding to DB
                             progressDialog.dismiss();
-                            Toast.makeText(EditProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
-        else {
-            // Update With Image
-            /*---------- First UpLoad Image ----------*/
-            /*---------- Image Name and Path on Firebase Storage ---------*/
-            String filePathAndName = "product_images/" + ""+ firebaseAuth.getUid(); // Override Previous Image Using Same id
+        else
+        {
+            // Upload With Image
 
-            // Get Storage reference
+            // First Upload Image To Storage
+
+            // Name and Path of Image to be Upload
+            String filePathAndName = "product_images/" + "" + timestamp;
             StorageReference storageReference = FirebaseStorage.getInstance().getReference(filePathAndName);
             storageReference.putFile(image_uri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //Image Uploaded, get url of uploaded image
+                            // Image Uploaded
+                            // Get URL of Uploaded Image
                             Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                            while(!uriTask.isSuccessful());
+                            while (!uriTask.isSuccessful());
                             Uri downloadImageUri = uriTask.getResult();
-
-                            if(uriTask.isSuccessful())
+                            if (uriTask.isSuccessful())
                             {
-                                //Image url received, now update DB
-                                //Setup Data to Update
+                                // Url of image received, Upload to DB
+                                //Setup Data To Upload
                                 HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("productTitle", "" + productTitle);
-                                hashMap.put("productDescription", "" + productDescription);
-                                hashMap.put("productCategory", "" + productCategory);
+                                hashMap.put("productID",""+timestamp);
+                                hashMap.put("productTitle",""+productTitle);
+                                hashMap.put("productDescription", ""+productDescription);
+                                hashMap.put("productCategory", ""+productCategory);
+                                hashMap.put("productQuantity", ""+productQuantity);
                                 hashMap.put("productIcon", "" + downloadImageUri);
-                                hashMap.put("productQuantity", "" + productQuantity);
-                                hashMap.put("originalPrice", "" + originalPrice);
-                                hashMap.put("discountPrice", "" + discountPrice);
-                                hashMap.put("discountNote", "" + discountNote);
-                                hashMap.put("discountAvailable", "" + discountAvailable);
+                                hashMap.put("originalPrice", ""+originalPrice);
+                                hashMap.put("discountPrice", ""+discountPrice);
+                                hashMap.put("discountNote", ""+discountNote);
+                                hashMap.put("discountAvailable", ""+discountAvailable);
+                                hashMap.put("timestamp", ""+timestamp);
+                                hashMap.put("uid", ""+firebaseAuth.getUid());
 
-                                //Update to DB
+                                //Add to DB
                                 DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-                                reference.child(firebaseAuth.getUid()).child("Products").child(productId)
-                                        .updateChildren(hashMap)
+                                reference.child(firebaseAuth.getUid())
+                                        .child("Products").child(timestamp).setValue(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
-                                                // Updated Success
+                                                //Added to  DB
                                                 progressDialog.dismiss();
-                                                Toast.makeText(EditProductActivity.this, "Updated Product", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AddProductActivity.this, "Product Added", Toast.LENGTH_SHORT).show();
+                                                clearData();
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                //Failed to Update
+                                                //Failed adding to DB
                                                 progressDialog.dismiss();
-                                                Toast.makeText(EditProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AddProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
                                             }
                                         });
                             }
@@ -385,29 +347,24 @@ public class EditProductActivity extends AppCompatActivity {
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            //Failed to update
+                            // Failed Uploading Image
                             progressDialog.dismiss();
-                            Toast.makeText(EditProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AddProductActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
     }
 
-    private void categoryDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Product Category")
-                .setItems(Constants.productCategories, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        //Get Picked Category
-                        String Categories = Constants.productCategories[which];
-
-                        //Set Picked Category
-                        categoryTv.setText(Categories);
-                    }
-                })
-                .show();
+    private void clearData() {
+        titleEt.setText("");
+        descriptionEt.setText("");
+        categoryTv.setText("");
+        quantityEt.setText("");
+        priceEt.setText("");
+        discountPriceEt.setText("");
+        discountNoteEt.setText("");
+        productIconIv.setImageResource(R.drawable.ic_add_shopping_primary);
+        image_uri = null;
     }
 
     private void showImagePickDialog() {
@@ -451,6 +408,23 @@ public class EditProductActivity extends AppCompatActivity {
                     }
                 }).show();
     }
+    private boolean checkStoragePermission() {
+        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
+        return result; // Returns true/false
+    }
+    private void requestStoragePermission() {
+        ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
+    }
+
+    private boolean checkCameraPermission() {
+        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)==(PackageManager.PERMISSION_GRANTED);
+        boolean result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
+
+        return result1 && result2;
+    }
+    private void requestCameraPermission() {
+        ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE);
+    }
 
     private void pickFromGallery(){
         // Intent To Pick Image From Gallery
@@ -458,7 +432,6 @@ public class EditProductActivity extends AppCompatActivity {
         intent.setType("image/*");
         startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
     }
-
     private void pickFromCamera() {
 
         // Intent To Pick Image From Camera
@@ -471,26 +444,6 @@ public class EditProductActivity extends AppCompatActivity {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
         startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
-    }
-
-    private boolean checkStoragePermission() {
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
-        return result; // Returns true/false
-    }
-
-    private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
-    }
-
-    private boolean checkCameraPermission() {
-        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)==(PackageManager.PERMISSION_GRANTED);
-        boolean result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
-
-        return result1 && result2;
-    }
-
-    private void requestCameraPermission() {
-        ActivityCompat.requestPermissions(this, cameraPermissions, CAMERA_REQUEST_CODE);
     }
 
     @Override
@@ -550,4 +503,5 @@ public class EditProductActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 }

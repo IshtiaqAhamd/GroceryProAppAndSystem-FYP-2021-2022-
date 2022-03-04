@@ -1,4 +1,4 @@
-package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem;
+package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -32,6 +32,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters.AdapterProductSeller;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.Constants;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelProduct;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
 
 public class MainSellerActivity extends AppCompatActivity {
     // Declaring Main Seller Activity UI Views
@@ -243,7 +248,7 @@ public class MainSellerActivity extends AppCompatActivity {
         ordersRl.setVisibility(View.GONE);
 
         tabProductsTv.setTextColor(getResources().getColor(R.color.colorBlack));
-        tabProductsTv.setBackgroundResource(R.drawable.shape_rect04);
+        tabProductsTv.setBackgroundColor(R.drawable.shape_rect04);
 
         tabOrdersTv.setTextColor(getResources().getColor(R.color.colorWhite));
         tabOrdersTv.setBackgroundColor(getResources().getColor(android.R.color.transparent));
@@ -258,7 +263,7 @@ public class MainSellerActivity extends AppCompatActivity {
         tabProductsTv.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
         tabOrdersTv.setTextColor(getResources().getColor(R.color.colorBlack));
-        tabOrdersTv.setBackgroundResource(R.drawable.shape_rect04);
+        tabOrdersTv.setBackgroundColor(R.drawable.shape_rect04);
 
     }
 
