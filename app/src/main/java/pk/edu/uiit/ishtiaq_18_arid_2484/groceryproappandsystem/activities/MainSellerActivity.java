@@ -78,7 +78,7 @@ public class MainSellerActivity extends AppCompatActivity {
         productsRl = findViewById(R.id.productsRl);
         ordersRl = findViewById(R.id.ordersRl);
         addProductBtn = findViewById(R.id.updateProductBtn);
-        logoutBtn = findViewById(R.id.logoutBtn);
+        logoutBtn = findViewById(R.id.cartBtn);
         editProfileBtn = findViewById(R.id.editProfileBtn);
         profileIv = findViewById(R.id.profileIv);
         productsRv = findViewById(R.id.productsRv);

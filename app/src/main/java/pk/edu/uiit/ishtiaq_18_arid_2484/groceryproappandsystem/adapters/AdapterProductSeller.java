@@ -74,22 +74,23 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         // Set Data
         holder.titleTv.setText(title);
         holder.quantityTv.setText(quantity);
-        holder.discountNoteTv.setText(discountNote);
-        holder.discountPriceTv.setText("$" + discountPrice);
+        holder.discountedNoteTv.setText(discountNote);
+        holder.discountedPriceTv.setText("$" + discountPrice);
         holder.originalPriceTv.setText("$" + originalPrice);
 
         if (discountAvailable.equals("true")){
             // Product Is On Discount
-            holder.discountPriceTv.setVisibility(View.VISIBLE);
-            holder.discountNoteTv.setVisibility(View.VISIBLE);
+            holder.discountedPriceTv.setVisibility(View.VISIBLE);
+            holder.discountedNoteTv.setVisibility(View.VISIBLE);
             // Add Strike through On Original Price
             holder.originalPriceTv.setPaintFlags(holder.originalPriceTv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
 
         }
         else {
             // Product Is Not On Discount
-            holder.discountPriceTv.setVisibility(View.GONE);
-            holder.discountNoteTv.setVisibility(View.GONE);
+            holder.discountedPriceTv.setVisibility(View.GONE);
+            holder.discountedNoteTv.setVisibility(View.GONE);
+            holder.originalPriceTv.setPaintFlags(0);
         }
         try {
             Picasso.get().load(icon).placeholder(R.drawable.ic_add_shopping_primary).into(holder.productIconIv);
@@ -118,7 +119,7 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
         ImageButton deleteBtn = view.findViewById(R.id.deleteBtn);
         ImageButton editBtn = view.findViewById(R.id.editBtn);
         ImageView productIconIv = view.findViewById(R.id.productIconIv);
-        TextView discountNoteTv = view.findViewById(R.id.discountNoteTv);
+        TextView discountNoteTv = view.findViewById(R.id.discountedNoteTv);
         TextView titleTv = view.findViewById(R.id.titleTv);
         TextView descriptionTv = view.findViewById(R.id.descriptionTv);
         TextView categoryTv = view.findViewById(R.id.categoryTv);
@@ -257,17 +258,17 @@ public class AdapterProductSeller extends RecyclerView.Adapter<AdapterProductSel
     }
 
     class HolderProductSeller extends RecyclerView.ViewHolder{
-        /* Holds Views Of Recycler view */
 
+        // UI Views of row_product_user.xml
         ImageView productIconIv;
-        TextView discountNoteTv, titleTv, quantityTv, discountPriceTv, originalPriceTv;
+        TextView discountedNoteTv, titleTv, quantityTv, discountedPriceTv, originalPriceTv;
         public HolderProductSeller(@NonNull View itemView) {
             super(itemView);
             productIconIv = itemView.findViewById(R.id.productIconIv);
-            discountNoteTv = itemView.findViewById(R.id.discountNoteTv);
+            discountedNoteTv = itemView.findViewById(R.id.discountedNoteTv);
             titleTv = itemView.findViewById(R.id.titleTv);
             quantityTv = itemView.findViewById(R.id.quantityTv);
-            discountPriceTv = itemView.findViewById(R.id.discountPriceTv);
+            discountedPriceTv = itemView.findViewById(R.id.discountedPriceTv);
             originalPriceTv = itemView.findViewById(R.id.originalPriceTv);
         }
 

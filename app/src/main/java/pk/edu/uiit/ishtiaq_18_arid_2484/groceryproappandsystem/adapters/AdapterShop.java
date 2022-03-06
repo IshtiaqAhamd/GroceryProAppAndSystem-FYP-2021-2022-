@@ -1,6 +1,7 @@
 package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.activities.ShopDetailsActivity;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelShop;
 
 public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
@@ -85,7 +87,6 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
         }
 
         // Shop Image
-
         try {
             Picasso.get().load(profileImage).placeholder(R.drawable.ic_store_gray).into(holder.shopIv);
         }
@@ -93,6 +94,15 @@ public class AdapterShop extends RecyclerView.Adapter<AdapterShop.HolderShop> {
             holder.shopIv.setImageResource(R.drawable.ic_store_gray);
         }
 
+        // Handel Click Listener, Show Shop Details
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ShopDetailsActivity.class);
+                intent.putExtra("shopUid", uid);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

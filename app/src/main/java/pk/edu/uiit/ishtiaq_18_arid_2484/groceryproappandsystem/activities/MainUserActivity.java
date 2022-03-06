@@ -67,7 +67,7 @@ public class MainUserActivity extends AppCompatActivity {
         tabOrdersTv = findViewById(R.id.tabOrdersTv);
         shopsRl = findViewById(R.id.shopsRl);
         ordersRl = findViewById(R.id.ordersRl);
-        logoutBtn = findViewById(R.id.logoutBtn);
+        logoutBtn = findViewById(R.id.cartBtn);
         editProfileBtn = findViewById(R.id.editProfileBtn);
         profileIv = findViewById(R.id.profileIv);
         shopsRv = findViewById(R.id.shopsRv);
