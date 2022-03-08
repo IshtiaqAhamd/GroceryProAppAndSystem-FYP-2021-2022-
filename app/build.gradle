@@ -41,6 +41,7 @@ dependencies {
 
     // Image Loading From Firebase
     implementation 'com.squareup.picasso:picasso:2.71828'
+
     
     // Firebase Authentication, Database and Storage
     implementation 'com.google.firebase:firebase-auth:21.0.1'
