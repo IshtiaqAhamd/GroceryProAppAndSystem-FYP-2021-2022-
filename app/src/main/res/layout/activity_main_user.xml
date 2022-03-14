@@ -14,7 +14,7 @@
         android:background="@drawable/shape_rect01"
         android:padding="10dp">
         <ImageButton
-            android:id="@+id/cartBtn"
+            android:id="@+id/logoutBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
@@ -26,7 +26,7 @@
             android:id="@+id/editProfileBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_toStartOf="@id/cartBtn"
+            android:layout_toStartOf="@id/logoutBtn"
             android:background="@null"
             android:src="@drawable/ic_edit_white"></ImageButton>
 

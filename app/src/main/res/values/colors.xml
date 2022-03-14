@@ -13,6 +13,7 @@
     <color name="colorAccent">#0A527E</color>
     <color name="colorWhite">#fff</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="colorGray00">#f5f0f0</color>
     <color name="colorGray01">#c9c9c9</color>
     <color name="colorGray02">#959595</color>
     <color name="colorBlack">#000</color>

@@ -12,6 +12,7 @@ import android.widget.Filterable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.DataBaseHelper;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.FilterProductUser;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelProduct;
@@ -205,21 +207,31 @@ public class AdapterProductUser extends RecyclerView.Adapter<AdapterProductUser.
             @Override
             public void onClick(View v) {
                 String title = titleTv.getText().toString().trim();
-                String priceEach = originalPriceTv.getText().toString().trim().replace("$", "");
-                String price = finalPriceTv.getText().toString().trim().replace("$", "");
+                String priceEach = price;
+                String totalPrice = finalPriceTv.getText().toString().trim().replace("$", "");
                 String quantity = quantityTv.getText().toString().trim();
 
                 // Add To Database(SQLite)
-                addToCart(productID, title, priceEach, price, quantity);
+                DataBaseHelper databaseHelper;
+                databaseHelper = new DataBaseHelper(context);
+                long cartData = databaseHelper.addToCart(productID, title, priceEach, totalPrice, quantity);
+                if(cartData==-1)
+                {
+                    Toast.makeText(context, "Error! Not Added To Cart", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(context, "Added To Cart", Toast.LENGTH_LONG).show();
+                }
                dialog.dismiss();
             }
         });
     }
 
-    int itemId = 1;
-    private void addToCart(String productID, String title, String priceEach, String price, String quantity) {
-        itemId++;
-    }
+//    int itemId = 1;
+//    private void addToCart(String productID, String title, String priceEach, String price, String quantity) {
+//        itemId++;
+//
+//    }
 
     @Override
     public int getItemCount() {

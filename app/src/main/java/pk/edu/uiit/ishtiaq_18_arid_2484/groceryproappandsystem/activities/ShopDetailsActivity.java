@@ -3,11 +3,14 @@ package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -29,8 +32,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.Constants;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.DataBaseHelper;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters.AdapterCartItem;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters.AdapterProductUser;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelCartItem;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelProduct;
 
 public class ShopDetailsActivity extends AppCompatActivity {
@@ -44,12 +50,17 @@ public class ShopDetailsActivity extends AppCompatActivity {
     String shopUid;
     String myLatitude, myLongitude;
     String shopName, shopEmail, shopPhone, shopAddress, shopLatitude, shopLongitude;
+    public String deliveryFee;
 
     // FirebaseAuth
     private FirebaseAuth firebaseAuth;
 
     ArrayList<ModelProduct> productsList;
     AdapterProductUser adapterProductUser;
+
+    // Cart
+    ArrayList<ModelCartItem> cartItemList;
+    AdapterCartItem adapterCartItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +99,14 @@ public class ShopDetailsActivity extends AppCompatActivity {
         loadMyInfo();
         loadShopDetails();
         loadShopProducts();
+        // Each Shop Have Its Own Products and Orders, So If User Add Items To Cart And Go Back And Open Cart Different Shop Then Cart Should Bbe Different
+        // So Delete Cart Data Whenever User Open This Activity
+        deleteCartData();
 
+    }
+
+    private void deleteCartData() {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
     }
 
     // UI Views Performance Actions
@@ -129,6 +147,8 @@ public class ShopDetailsActivity extends AppCompatActivity {
         cartBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Show Cart Dialog
+                showCartDialog();
             }
         });
 
@@ -174,12 +194,107 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
     }
 
+   public double allTotalPrice = 0.00;
+
+    // Need To Access Theses Views In Adapter So Making Public
+    public TextView sTotalTv, dFeeTv, allTotalPriceTv;
+
+    private void showCartDialog() {
+        // Initialization List
+        cartItemList = new ArrayList<>();
+
+        // Inflate Cart Layout
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_cart, null);
+
+        // Initialization Views
+        TextView shopNameTv = view.findViewById(R.id.shopNameTv);
+        RecyclerView cartItemsRv = view.findViewById(R.id.cartItemsRv);
+        sTotalTv = view.findViewById(R.id.sTotalTv);
+        dFeeTv = view.findViewById(R.id.dFeeTv);
+        allTotalPriceTv = view.findViewById(R.id.totalTv);
+        Button checkoutBtn = view.findViewById(R.id.checkoutBtn);
+
+        // Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Set View To Dialog
+        builder.setView(view);
+
+        shopNameTv.setText(shopName);
+
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+        // Get All Data From Database (Sqlite)
+        Cursor res = dataBaseHelper.getCartData();
+        if (res.getCount() == 0){
+            Toast.makeText(this, "Cart Is Empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        while(res.moveToNext()){
+
+            String id = res.getString(0);
+            String pId = res.getString(1);
+            String name = res.getString(2);
+            String price = res.getString(3);
+            String cost = res.getString(4);
+            String quantity = res.getString(5);
+
+          //  allTotalPriceTv = allTotalPrice + Double.parseDouble(cost);
+            ModelCartItem modelCartItem = new ModelCartItem(
+                    "" + id,
+                    ""+pId,
+                    ""+name,
+                    ""+price,
+                    ""+cost,
+                    ""+quantity
+            );
+            cartItemList.add(modelCartItem);
+        }
+        // Setup Adapter
+        adapterCartItem = new AdapterCartItem(this,cartItemList);
+        // Set To Recyclerview
+        cartItemsRv.setAdapter(adapterCartItem);
+
+        dFeeTv.setText("$" + deliveryFee);
+        sTotalTv.setText("$" + String.format("%.2f", allTotalPrice));
+       // allTotalPriceTv.setText("$"+(allTotalPrice + Double.parseDouble((deliveryFee.replace("$","")))));
+
+        // Show Dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        // Reset Total Price On Dialog Dismiss
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                allTotalPrice = 0.00;
+            }
+        });
+
+
+//        StringBuffer buffer = new StringBuffer();
+//        while(res.moveToNext()){
+//
+//            buffer.append("Item_Id :"+ res.getString(0)+"\n\n");
+//            buffer.append("Item_PID :"+ res.getString(1)+"\n\n");
+//            buffer.append("Item_Name :"+ res.getString(2)+"\n\n");
+//            buffer.append("Item_Price_Each :"+ res.getString(3)+"\n\n");
+//            buffer.append("Item_Price :"+ res.getString(4)+"\n\n");
+//            buffer.append("Item_Quantity :"+ res.getString(5)+"\n\n");
+//        }
+//
+//        AlertDialog.Builder build= new AlertDialog.Builder(ShopDetailsActivity.this);
+//        build.setCancelable(true);
+//        build.setTitle("Cart Items");
+//        build.setMessage(buffer.toString());
+//        build.show();
+    }
+
     private void openMap() {
+
         // saddr means Source Address
         // daddr means Destination Address
         String address = "https://maps.google.com/maps?saddr=" +myLatitude+ "," +myLongitude+ "&daddr=" +shopLatitude+ "," +shopLongitude;
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(address));
         startActivity(intent);
+
     }
 
     private void dialPhone() {
@@ -227,7 +342,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 shopLatitude = ""+snapshot.child("latitude").getValue();
                 shopLongitude = ""+snapshot.child("longitude").getValue();
                 shopAddress = ""+snapshot.child("address").getValue();
-                String deliveryFee = ""+snapshot.child("deliveryFee").getValue();
+                deliveryFee = ""+snapshot.child("deliveryFee").getValue();
                 String profileImage = ""+snapshot.child("profileImage").getValue();
                 String shopOpen = ""+snapshot.child("shopOpen").getValue();
                 // Set Shop Data
