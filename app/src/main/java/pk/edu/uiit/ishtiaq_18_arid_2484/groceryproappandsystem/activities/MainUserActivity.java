@@ -29,7 +29,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters.AdapterOrderUser;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters.AdapterShop;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelOrderUser;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelShop;
 
 public class MainUserActivity extends AppCompatActivity {
@@ -38,7 +40,7 @@ public class MainUserActivity extends AppCompatActivity {
     RelativeLayout shopsRl, ordersRl;
     ImageButton logoutBtn, editProfileBtn;
     ImageView profileIv;
-    RecyclerView shopsRv;
+    RecyclerView shopsRv, ordersRv;
 
     // FirebaseAuth
     private FirebaseAuth firebaseAuth;
@@ -48,6 +50,9 @@ public class MainUserActivity extends AppCompatActivity {
 
     ArrayList<ModelShop> shopsList;
     AdapterShop adapterShop;
+
+    ArrayList<ModelOrderUser> ordersList;
+    AdapterOrderUser  adapterOrderUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,7 @@ public class MainUserActivity extends AppCompatActivity {
         editProfileBtn = findViewById(R.id.editProfileBtn);
         profileIv = findViewById(R.id.profileIv);
         shopsRv = findViewById(R.id.shopsRv);
+        ordersRv = findViewById(R.id.ordersRv);
 
         // Initialization Of FirebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
@@ -186,6 +192,7 @@ public class MainUserActivity extends AppCompatActivity {
 
                             // Load Only Those Shops That Are In The City Of User
                             loadShops(city);
+                            loadOrders();
                         }
                     }
                     @Override
@@ -193,6 +200,53 @@ public class MainUserActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    private void loadOrders() {
+        // Initialization Of Order List
+        ordersList = new ArrayList<>();
+
+        // Get Orders
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ordersList.clear();
+                for (DataSnapshot ds: snapshot.getChildren()){
+                    String uid = ""+ds.getRef().getKey();
+                    DatabaseReference reference  = FirebaseDatabase.getInstance().getReference("Users").child(uid).child("Orders");
+                    reference.orderByChild("orderBy").equalTo(firebaseAuth.getUid())
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.exists()){
+                                        for (DataSnapshot ds: snapshot.getChildren()){
+                                            ModelOrderUser modelOrderUser = ds.getValue(ModelOrderUser.class);
+
+                                            // Add To Lit
+                                            ordersList.add(modelOrderUser);
+                                        }
+                                        // Setup Adapter
+                                        adapterOrderUser = new AdapterOrderUser(MainUserActivity.this, ordersList);
+                                        // Set To Recyclerview
+                                        ordersRv.setAdapter(adapterOrderUser);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void loadShops(String myCity) {
