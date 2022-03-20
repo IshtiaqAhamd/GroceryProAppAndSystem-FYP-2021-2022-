@@ -1,6 +1,7 @@
 package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.activities.OrderDetailsUsersActivity;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelOrderUser;
 
 public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.HolderOrderUser> {
@@ -75,6 +77,18 @@ public class AdapterOrderUser extends RecyclerView.Adapter<AdapterOrderUser.Hold
         calendar.setTimeInMillis(Long.parseLong(orderTime));
         String formatedDate = DateFormat.format("dd/MM/yyyy", calendar).toString(); // e.g. 14/03/2022
         holder.dateTv.setText(formatedDate);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open Order Details, We Need To Keys there, orderId, orderTo
+                Intent intent = new Intent(context, OrderDetailsUsersActivity.class);
+                intent.putExtra("orderTo", orderTo);
+                intent.putExtra("orderId", orderId);
+                // Now Get These Values Through Intent On OrderDetailsUsersActivity;
+                context.startActivity(intent);
+            }
+        });
     }
 
     private void loadShopInfo(ModelOrderUser modelOrderUser, HolderOrderUser holder) {

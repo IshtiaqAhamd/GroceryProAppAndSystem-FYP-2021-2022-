@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroceryProAppAndSystem.NoActionBar">
         <activity
+            android:name=".activities.WriteReviewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.OrderDetailsUsersActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ShopDetailsActivity"
             android:exported="false" />
         <activity

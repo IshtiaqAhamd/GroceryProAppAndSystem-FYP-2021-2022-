@@ -46,7 +46,7 @@ import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelProdu
 public class ShopDetailsActivity extends AppCompatActivity {
     // Declaring  Shop Details Activity  UI Views
     ImageView shopIv;
-    TextView shopNameTv, phoneTv, emailTv, openCloseTv, deliveryFeeTv, addressTv, filteredProductsTv;
+    TextView shopNameTv, phoneTv, emailTv, openCloseTv, deliveryFeeTv, addressTv, filteredProductsTv, cartCountTv;
     ImageButton callBtn, mapBtn, cartBtn, backBtn, filterProductBtn;
     EditText searchProductEt;
     RecyclerView productsRv;
@@ -76,6 +76,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
         ViewsInitialization();
         ViewsPerformanceActions();
+        cartCount();
     }
 
     // UI Views Initialization
@@ -96,6 +97,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         filterProductBtn = findViewById(R.id.filterProductBtn);
         searchProductEt = findViewById(R.id.searchProductEt);
         productsRv = findViewById(R.id.productsRv);
+        cartCountTv = findViewById(R.id.cartCountTv);
 
         // Get Uid Of The Shop From Intent
         shopUid = getIntent().getStringExtra("shopUid");
@@ -120,6 +122,23 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
     private void deleteCartData() {
         DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+    }
+
+    public void cartCount(){
+        // Keep It Public So We Can Access In Adapter
+        // Get Cart Count
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+        int count = dataBaseHelper.cartCount().getCount();
+        if (count<=0){
+            // No Item In Cart, Hide Cart Count TextView
+            cartCountTv.setVisibility(View.GONE);
+        }
+        else {
+            // Have Items In Cart, Hide Cart Count TextView and Set Count
+            cartCountTv.setVisibility(View.VISIBLE);
+            cartCountTv.setText("" + count); // Concatenate With String, Because We can't Set Integer In TextView
+        }
+
     }
 
     // UI Views Performance Actions
@@ -332,15 +351,18 @@ public class ShopDetailsActivity extends AppCompatActivity {
         String timestamp = ""+System.currentTimeMillis();
 
         String cost = allTotalPriceTv.getText().toString().trim().replace("$", ""); // Remove $ If Contains
+        // Add Latitude, Longitude Of User To Each Other | Delete Previous Orders From Firebase or Add Manually To Them
 
-        // For Order Data
+        // Setup Order Data
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("orderId", "" + timestamp);
         hashMap.put("orderTime", "" + timestamp);
-        hashMap.put("orderStatus", "orderStatus");
+        hashMap.put("orderStatus", "In Progress"); // In Progress/Completed/Cancelled
         hashMap.put("orderCost", ""+cost);
         hashMap.put("orderBy", ""+firebaseAuth.getUid());
         hashMap.put("orderTo", ""+shopUid);
+        hashMap.put("Latitude", ""+myLatitude);
+        hashMap.put("Longitude", ""+myLongitude);
 
         // Add To Database (Firebase)
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(shopUid).child("Orders");
@@ -369,6 +391,13 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
                         progressDialog.dismiss();
                         Toast.makeText(ShopDetailsActivity.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
+
+                        // After Placing Order Open Order Details Page
+                        // Open Order Details, We Need To Keys there, orderId, orderTo
+                        Intent intent = new Intent(ShopDetailsActivity.this, OrderDetailsUsersActivity.class);
+                        intent.putExtra("orderTo", shopUid);
+                        intent.putExtra("orderId", timestamp);
+                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

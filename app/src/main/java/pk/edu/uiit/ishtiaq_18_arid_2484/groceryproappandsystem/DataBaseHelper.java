@@ -58,4 +58,10 @@ public  class DataBaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from " + Table_Name, null);
         return cursor;
     }
+
+    public Cursor cartCount(){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor count = db.rawQuery("select COUNT(*) from " + Table_Name, null);
+        return count;
+    }
 }
