@@ -33,27 +33,35 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters.AdapterOrderShop;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters.AdapterProductSeller;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.Constants;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelOrderShop;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelProduct;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
 
 public class MainSellerActivity extends AppCompatActivity {
     // Declaring Main Seller Activity UI Views
-    TextView nameTv, shopNameTv, emailTv, tabProductsTv, tabOrdersTv, filteredProductsTv;
+    TextView nameTv, shopNameTv, emailTv, tabProductsTv, tabOrdersTv, filteredProductsTv, filteredOrdersTv;
     EditText searchProductEt;
-    ImageButton logoutBtn, editProfileBtn, addProductBtn, filterProductBtn;
+    ImageButton logoutBtn, editProfileBtn, addProductBtn, filterProductBtn, filterOrderBtn;
     ImageView profileIv;
     RelativeLayout productsRl, ordersRl;
-    RecyclerView productsRv;
+    RecyclerView productsRv, ordersRv;
 
     // FirebaseAuth
     private FirebaseAuth firebaseAuth;
+
     // Progress Dialog
     private ProgressDialog progressDialog;
 
+    // Products
     ArrayList<ModelProduct> productList;
     AdapterProductSeller adapterProductSeller;
+
+    // Orders
+    ArrayList<ModelOrderShop> orderShopArrayList;
+    AdapterOrderShop adapterOrderShop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +80,7 @@ public class MainSellerActivity extends AppCompatActivity {
         emailTv = findViewById(R.id.emailTv);
         tabProductsTv = findViewById(R.id.tabProductsTv);
         tabOrdersTv = findViewById(R.id.tabOrdersTv);
+        filteredOrdersTv = findViewById(R.id.filteredOrdersTv);
         searchProductEt = findViewById(R.id.searchProductEt);
         filterProductBtn = findViewById(R.id.filterProductBtn);
         filteredProductsTv = findViewById(R.id.filteredProductsTv);
@@ -80,19 +89,52 @@ public class MainSellerActivity extends AppCompatActivity {
         addProductBtn = findViewById(R.id.updateProductBtn);
         logoutBtn = findViewById(R.id.cartBtn);
         editProfileBtn = findViewById(R.id.editProfileBtn);
+        filterOrderBtn = findViewById(R.id.filterOrderBtn);
         profileIv = findViewById(R.id.profileIv);
         productsRv = findViewById(R.id.productsRv);
+        ordersRv = findViewById(R.id.ordersRv);
 
         // Initialization Of FirebaseAuth
         firebaseAuth = FirebaseAuth.getInstance();
         checkUser();
         loadAllProducts();
+        loadAllOrders();
         showProductsUI();
 
         // Initialization Of Progress Dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait...");
         progressDialog.setCanceledOnTouchOutside(false);
+    }
+
+    private void loadAllOrders() {
+        // Initialization Of List
+        orderShopArrayList = new ArrayList<>();
+
+        // Load Orders Of Shop
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(firebaseAuth.getUid()).child("Orders")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // Clear List Before Adding New Data In It
+                        orderShopArrayList.clear();
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            ModelOrderShop modelOrderShop = ds.getValue(ModelOrderShop.class);
+                            // Add To List
+                            orderShopArrayList.add(modelOrderShop);
+                        }
+                        // Setup Adapter
+                        adapterOrderShop = new AdapterOrderShop(MainSellerActivity.this, orderShopArrayList);
+                        // Set Adapter To Recyclerview
+                        ordersRv.setAdapter(adapterOrderShop);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     private void loadAllProducts() {
@@ -206,6 +248,35 @@ public class MainSellerActivity extends AppCompatActivity {
                             }
                         })
                 .show();
+            }
+        });
+        filterOrderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Options To Display In Dialog
+                String[] options = {"All", "In Progress", "Completed", "Cancelled"};
+
+                // Dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainSellerActivity.this);
+                builder.setTitle("Filter Orders")
+                        .setItems(options, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Handel Item clicks
+                                if (which==0){
+                                    // All Clicked
+                                    filteredOrdersTv.setText("Showing All Orders");
+                                    adapterOrderShop.getFilter().filter(""); // Show All Orders
+                                }
+                                else {
+                                    String optionClicked = options[which];
+                                    filteredOrdersTv.setText("Showing " +optionClicked+ " Orders"); // e.g. Showing Completed Orders
+                                    adapterOrderShop.getFilter().filter(optionClicked);
+                                }
+                            }
+                        })
+                        .show();
             }
         });
     }
