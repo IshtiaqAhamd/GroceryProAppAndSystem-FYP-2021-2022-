@@ -99,7 +99,7 @@ public class EditProductActivity extends AppCompatActivity {
         discountNoteEt = findViewById(R.id.discountNoteEt);
         categoryTv = findViewById(R.id.categoryTv);
         discountSwitch = findViewById(R.id.discountSwitch);
-        updateProductBtn = findViewById(R.id.updateProductBtn);
+        updateProductBtn = findViewById(R.id.addProductBtn);
 
         // Get id Of The Product From Intent
         productId = getIntent().getStringExtra("productId");

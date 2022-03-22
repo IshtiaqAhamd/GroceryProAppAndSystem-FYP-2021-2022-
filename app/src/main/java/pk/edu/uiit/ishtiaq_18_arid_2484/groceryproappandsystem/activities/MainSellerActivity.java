@@ -44,7 +44,7 @@ public class MainSellerActivity extends AppCompatActivity {
     // Declaring Main Seller Activity UI Views
     TextView nameTv, shopNameTv, emailTv, tabProductsTv, tabOrdersTv, filteredProductsTv, filteredOrdersTv;
     EditText searchProductEt;
-    ImageButton logoutBtn, editProfileBtn, addProductBtn, filterProductBtn, filterOrderBtn;
+    ImageButton logoutBtn, editProfileBtn, addProductBtn, filterProductBtn, filterOrderBtn, reviewsBtn;
     ImageView profileIv;
     RelativeLayout productsRl, ordersRl;
     RecyclerView productsRv, ordersRv;
@@ -86,10 +86,11 @@ public class MainSellerActivity extends AppCompatActivity {
         filteredProductsTv = findViewById(R.id.filteredProductsTv);
         productsRl = findViewById(R.id.productsRl);
         ordersRl = findViewById(R.id.ordersRl);
-        addProductBtn = findViewById(R.id.updateProductBtn);
+        addProductBtn = findViewById(R.id.addProductBtn);
         logoutBtn = findViewById(R.id.cartBtn);
         editProfileBtn = findViewById(R.id.editProfileBtn);
         filterOrderBtn = findViewById(R.id.filterOrderBtn);
+        reviewsBtn = findViewById(R.id.reviewsBtn);
         profileIv = findViewById(R.id.profileIv);
         productsRv = findViewById(R.id.productsRv);
         ordersRv = findViewById(R.id.ordersRv);
@@ -277,6 +278,15 @@ public class MainSellerActivity extends AppCompatActivity {
                             }
                         })
                         .show();
+            }
+        });
+        reviewsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Open Same Reviews Activity As Used In User Main Activity
+                Intent intent = new Intent(MainSellerActivity.this, ShopReviewsActivity.class);
+                intent.putExtra("shopUid", ""+firebaseAuth.getUid());
+                startActivity(intent);
             }
         });
     }

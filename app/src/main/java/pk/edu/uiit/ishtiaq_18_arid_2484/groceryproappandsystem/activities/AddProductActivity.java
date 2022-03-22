@@ -92,7 +92,7 @@ public class AddProductActivity extends AppCompatActivity {
         discountNoteEt = findViewById(R.id.discountNoteEt);
         categoryTv = findViewById(R.id.categoryTv);
         discountSwitch = findViewById(R.id.discountSwitch);
-        addProductBtn = findViewById(R.id.updateProductBtn);
+        addProductBtn = findViewById(R.id.addProductBtn);
 
         // UnChecked, Hide Product Discount Price, Product Discount Note
         discountPriceEt.setVisibility(View.GONE);

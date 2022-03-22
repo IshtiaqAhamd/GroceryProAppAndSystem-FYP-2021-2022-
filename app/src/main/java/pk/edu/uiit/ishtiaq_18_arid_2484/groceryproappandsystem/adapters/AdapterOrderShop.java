@@ -1,6 +1,7 @@
 package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import java.util.Calendar;
 
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.FilterOrderShop;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.activities.OrderDetailsSellerActivity;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelOrderShop;
 
 public class AdapterOrderShop extends RecyclerView.Adapter<AdapterOrderShop.HolderOrderShop> implements Filterable {
@@ -85,6 +87,10 @@ public class AdapterOrderShop extends RecyclerView.Adapter<AdapterOrderShop.Hold
             @Override
             public void onClick(View v) {
                 // Open Order Details
+                Intent intent = new Intent(context, OrderDetailsSellerActivity.class);
+                intent.putExtra("orderId", orderId); // To Load Order Info
+                intent.putExtra("orderBy", orderBy); // To Load Info Of The User/Buyer Who Placed Order
+                context.startActivity(intent);
             }
         });
     }

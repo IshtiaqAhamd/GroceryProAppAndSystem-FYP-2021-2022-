@@ -8,6 +8,7 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -133,6 +134,20 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
     private void loadOrderDetails() {
         // Load Order Details
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+             // Not Yet Sure Address (Testing Reaming In This Portion)
+        reference.child(firebaseAuth.getUid())
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String address = ""+snapshot.child("address").getValue();
+                        addressTv.setText(address);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
         reference.child(orderTo).child("Orders").child(orderId)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
@@ -147,7 +162,6 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                         String deliveryFee = ""+snapshot.child("deliveryFee").getValue();
                         String latitude = ""+snapshot.child("latitude").getValue();
                         String longitude = ""+snapshot.child("longitude").getValue();
-                        String address = ""+snapshot.child("address").getValue();
 
                         // Convert Time Stamp To Proper Format
                         Calendar calendar = Calendar.getInstance();
@@ -212,7 +226,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
             addressTv.setText(address);
         }
         catch (Exception e){
-
+            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 }
