@@ -46,11 +46,11 @@ public class WriteReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_review);
 
-        ViewsInitialization();
-        ViewsPerformanceActions();
-
         // Get Shop UID From Intent
         shopUid = getIntent().getStringExtra("shopUid");
+
+        ViewsInitialization();
+        ViewsPerformanceActions();
     }
 
     // UI Views Initialization

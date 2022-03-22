@@ -169,7 +169,7 @@ public class OrderDetailsUsersActivity extends AppCompatActivity {
                         amountTv.setText("$" + orderCost + "[Incuding Delivery Fee $" + deliveryFee + "]");
                         dateTv.setText(formatedDate);
 
-                        findAddress(latitude, longitude);
+                        //findAddress(latitude, longitude);
                     }
 
                     @Override

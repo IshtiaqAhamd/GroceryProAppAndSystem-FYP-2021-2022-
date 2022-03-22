@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@color/colorGray02"/>
+            android:src="@color/colorGray02" />
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -71,6 +71,17 @@
                 android:layout_below="@id/openCloseTv"
                 android:textColor="@color/colorWhite"
                 android:layout_margin="3dp"/>
+            <!-- Ratingbar: Show Average Rating -->
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/deliveryFeeTv"
+                android:layout_alignParentEnd="true"
+                android:numStars="5"
+                android:progressBackgroundTint="@color/colorGray00"
+                android:progressTint="@color/colorWhite" />
             <TextView
                 android:id="@+id/addressTv"
                 android:layout_width="wrap_content"
@@ -147,6 +158,15 @@
             android:text="10"
             android:textColor="@color/colorWhite"
             android:textSize="8sp" />
+        <!-- Show Shop Reviews -->
+        <ImageButton
+            android:id="@+id/reviewsBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/cartBtn"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_star_white"/>
     </RelativeLayout>
 
     <!-- Products -->
@@ -199,4 +219,5 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/row_product_seller" />
     </RelativeLayout>
+
 </RelativeLayout>

@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,9 +48,10 @@ public class ShopDetailsActivity extends AppCompatActivity {
     // Declaring  Shop Details Activity  UI Views
     ImageView shopIv;
     TextView shopNameTv, phoneTv, emailTv, openCloseTv, deliveryFeeTv, addressTv, filteredProductsTv, cartCountTv;
-    ImageButton callBtn, mapBtn, cartBtn, backBtn, filterProductBtn;
+    ImageButton callBtn, mapBtn, cartBtn, backBtn, filterProductBtn, reviewsBtn;
     EditText searchProductEt;
     RecyclerView productsRv;
+    RatingBar ratingBar;
 
     String shopUid;
     String myLatitude, myLongitude, myPhone;
@@ -62,12 +64,14 @@ public class ShopDetailsActivity extends AppCompatActivity {
     // Progress Dialog
     private ProgressDialog progressDialog;
 
+    // Products
     ArrayList<ModelProduct> productsList;
     AdapterProductUser adapterProductUser;
 
     // Cart
     ArrayList<ModelCartItem> cartItemList;
     AdapterCartItem adapterCartItem;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,10 +98,12 @@ public class ShopDetailsActivity extends AppCompatActivity {
         mapBtn = findViewById(R.id.mapBtn);
         cartBtn = findViewById(R.id.cartBtn);
         backBtn = findViewById(R.id.backBtn);
+        reviewsBtn = findViewById(R.id.reviewsBtn);
         filterProductBtn = findViewById(R.id.filterProductBtn);
         searchProductEt = findViewById(R.id.searchProductEt);
         productsRv = findViewById(R.id.productsRv);
         cartCountTv = findViewById(R.id.cartCountTv);
+        ratingBar = findViewById(R.id.ratingBar);
 
         // Get Uid Of The Shop From Intent
         shopUid = getIntent().getStringExtra("shopUid");
@@ -113,11 +119,38 @@ public class ShopDetailsActivity extends AppCompatActivity {
         loadMyInfo();
         loadShopDetails();
         loadShopProducts();
+        loadReviews(); // Average Rating: Set On ratingbar
         // Each Shop Have Its Own Products and Orders, So If User Add Items To Cart And Go Back
         // And Open Cart Different Shop Then Cart Should Bbe Different
         // So Delete Cart Data Whenever User Open This Activity
         deleteCartData();
 
+    }
+
+    float ratingSum = 0;
+    private void loadReviews() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(shopUid).child("Ratings")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // Clear List Before Adding Data Into It
+                        ratingSum = 0;
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            float rating = Float.parseFloat(""+ds.child("ratings").getValue()); // e.g. 4.5
+                            ratingSum = ratingSum + rating; // For Average, Add(Addition Of) All Ratings, Later Will Divide It By Number Of Reviews
+                        }
+
+                        long numberOfReviews = snapshot.getChildrenCount();
+                        float avgRating = ratingSum/numberOfReviews;
+                        ratingBar.setRating(avgRating);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     private void deleteCartData() {
@@ -221,6 +254,17 @@ public class ShopDetailsActivity extends AppCompatActivity {
                             }
                         })
                         .show();
+            }
+        });
+
+        // Handle reviewsBtn Click, Open Reviews Activity
+        reviewsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Pass Shop uid To Show Its Activity
+                Intent intent = new Intent(ShopDetailsActivity.this, ShopReviewsActivity.class);
+                intent.putExtra("shopUid", shopUid);
+                startActivity(intent);
             }
         });
 
