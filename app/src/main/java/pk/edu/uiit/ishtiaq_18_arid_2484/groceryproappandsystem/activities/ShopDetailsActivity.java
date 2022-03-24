@@ -23,6 +23,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,8 +38,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.Constants;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.DataBaseHelper;
@@ -436,12 +444,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         Toast.makeText(ShopDetailsActivity.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
 
-                        // After Placing Order Open Order Details Page
-                        // Open Order Details, We Need To Keys there, orderId, orderTo
-                        Intent intent = new Intent(ShopDetailsActivity.this, OrderDetailsUsersActivity.class);
-                        intent.putExtra("orderTo", shopUid);
-                        intent.putExtra("orderId", timestamp);
-                        startActivity(intent);
+                        preparedNotificationMessage(timestamp);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -569,5 +572,78 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    // Prepared Notification Message
+    private void preparedNotificationMessage(String orderId){
+       // When User Places Order, Sand Notification To Seller
+
+        // Prepare Data For Notification
+        String NOTIFICATION_TOPIC = "/topics/" +Constants.FCM_TOPIC; // Must Be Same Subscribed By User
+        String NOTIFICATION_TITLE = "New Order " + orderId;
+        String NOTIFICATION_MESSAGE = "Congratulation...! You Have New Order.";
+        String NOTIFICATION_TYPE = "NewOrder";
+
+        // Prepare JSON (What To Send And Where To Sand)
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+
+        try {
+
+            // What To Sand
+            notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
+            // Since We Are Logged In As Buyer To Place Order So Current User uid Is Buyer uid
+            notificationBodyJo.put("buyerUid", firebaseAuth.getUid());
+            notificationBodyJo.put("sellerUid", shopUid);
+            notificationBodyJo.put("orderId", orderId);
+            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
+
+            // Where To Sand
+            notificationJo.put("to", NOTIFICATION_TOPIC); // To All who Subscribed To This Topic
+            notificationJo.put("data", notificationBodyJo);
+        }
+        catch (Exception e){
+            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        sendFcmNotification(notificationJo, orderId);
+    }
+
+    private void sendFcmNotification(JSONObject notificationJo, String orderId) {
+        // Send Volley Request
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                // After Sending FCM Start Order Details Activity
+                // Open Order Details, We Need To Keys there, orderId, orderTo
+                Intent intent = new Intent(ShopDetailsActivity.this, OrderDetailsUsersActivity.class);
+                intent.putExtra("orderTo", shopUid);
+                intent.putExtra("orderId", orderId);
+                startActivity(intent);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // If Failed Sending FCM, Still Start Order Details Activity
+                Intent intent = new Intent(ShopDetailsActivity.this, OrderDetailsUsersActivity.class);
+                intent.putExtra("orderTo", shopUid);
+                intent.putExtra("orderId", orderId);
+                startActivity(intent);
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                // Put Required Headers
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type","application/json");
+                headers.put("Authorization","key" + Constants.FCM_TOPIC);
+                return headers;
+            }
+        };
+
+        // Enque The Volley Request
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 }

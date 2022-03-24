@@ -17,6 +17,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,12 +31,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.Constants;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters.AdapterOrderedItem;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelOrderedItem;
@@ -317,8 +326,11 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
+                        String message = "Order Is Now "+selectedOption;
                         // Status Updated
-                        Toast.makeText(OrderDetailsSellerActivity.this, "Order Is Now "+selectedOption, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrderDetailsSellerActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                        preparedNotificationMessage(orderId, message);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -328,5 +340,69 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                         Toast.makeText(OrderDetailsSellerActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    // Prepared Notification Message
+    private void preparedNotificationMessage(String orderId, String message){
+        // When User seller Change The Order Status In Progress/Completed/Cancelled, Sand Notification To Buyer
+
+        // Prepare Data For Notification
+        String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC; // Must Be Same Subscribed By User
+        String NOTIFICATION_TITLE = "Your Order " + orderId;
+        String NOTIFICATION_MESSAGE = ""+message;
+        String NOTIFICATION_TYPE = "OrderStatusNotification";
+
+        // Prepare JSON (What To Send And Where To Sand)
+        JSONObject notificationJo = new JSONObject();
+        JSONObject notificationBodyJo = new JSONObject();
+
+        try {
+
+            // What To Sand
+            notificationBodyJo.put("notificationType", NOTIFICATION_TYPE);
+            notificationBodyJo.put("buyerUid", orderBy);
+            // Since We Are Logged In As Seller To Change Order Status So Current User uid Is Seller uid
+            notificationBodyJo.put("sellerUid", firebaseAuth.getUid());
+            notificationBodyJo.put("orderId", orderId);
+            notificationBodyJo.put("notificationTitle", NOTIFICATION_TITLE);
+            notificationBodyJo.put("notificationMessage", NOTIFICATION_MESSAGE);
+
+            // Where To Sand
+            notificationJo.put("to", NOTIFICATION_TOPIC); // To All who Subscribed To This Topic
+            notificationJo.put("data", notificationBodyJo);
+        }
+        catch (Exception e){
+            Toast.makeText(this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        sendFcmNotification(notificationJo);
+    }
+
+    private void sendFcmNotification(JSONObject notificationJo) {
+        // Send Volley Request
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest("https://fcm.googleapis.com/fcm/send", notificationJo, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                // Notification Sent
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Notification Failed
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                // Put Required Headers
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type","application/json");
+                headers.put("Authorization","key" + Constants.FCM_TOPIC);
+                return headers;
+            }
+        };
+
+        // Enque The Volley Request
+        Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 }
