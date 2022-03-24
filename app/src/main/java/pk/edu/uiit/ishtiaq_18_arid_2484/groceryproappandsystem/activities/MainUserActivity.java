@@ -38,7 +38,7 @@ public class MainUserActivity extends AppCompatActivity {
     // Declaring Main User Activity UI Views
     TextView nameTv, emailTv, phoneTv, tabShopsTv, tabOrdersTv;
     RelativeLayout shopsRl, ordersRl;
-    ImageButton logoutBtn, editProfileBtn;
+    ImageButton logoutBtn, editProfileBtn, settingsBtn;
     ImageView profileIv;
     RecyclerView shopsRv, ordersRv;
 
@@ -74,6 +74,7 @@ public class MainUserActivity extends AppCompatActivity {
         ordersRl = findViewById(R.id.ordersRl);
         logoutBtn = findViewById(R.id.logoutBtn);
         editProfileBtn = findViewById(R.id.editProfileBtn);
+        settingsBtn = findViewById(R.id.settingsBtn);
         profileIv = findViewById(R.id.profileIv);
         shopsRv = findViewById(R.id.shopsRv);
         ordersRv = findViewById(R.id.ordersRv);
@@ -146,6 +147,14 @@ public class MainUserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Show Orders
                 showOrdersUI();
+            }
+        });
+
+        // Start Settings Screen
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainUserActivity.this, SettingsActivity.class));
             }
         });
     }

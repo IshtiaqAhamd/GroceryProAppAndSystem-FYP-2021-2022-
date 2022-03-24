@@ -44,7 +44,7 @@ public class MainSellerActivity extends AppCompatActivity {
     // Declaring Main Seller Activity UI Views
     TextView nameTv, shopNameTv, emailTv, tabProductsTv, tabOrdersTv, filteredProductsTv, filteredOrdersTv;
     EditText searchProductEt;
-    ImageButton logoutBtn, editProfileBtn, addProductBtn, filterProductBtn, filterOrderBtn, reviewsBtn;
+    ImageButton logoutBtn, editProfileBtn, addProductBtn, filterProductBtn, filterOrderBtn, reviewsBtn, settingsBtn;
     ImageView profileIv;
     RelativeLayout productsRl, ordersRl;
     RecyclerView productsRv, ordersRv;
@@ -91,6 +91,7 @@ public class MainSellerActivity extends AppCompatActivity {
         editProfileBtn = findViewById(R.id.editProfileBtn);
         filterOrderBtn = findViewById(R.id.filterOrderBtn);
         reviewsBtn = findViewById(R.id.reviewsBtn);
+        settingsBtn = findViewById(R.id.settingsBtn);
         profileIv = findViewById(R.id.profileIv);
         productsRv = findViewById(R.id.productsRv);
         ordersRv = findViewById(R.id.ordersRv);
@@ -287,6 +288,14 @@ public class MainSellerActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainSellerActivity.this, ShopReviewsActivity.class);
                 intent.putExtra("shopUid", ""+firebaseAuth.getUid());
                 startActivity(intent);
+            }
+        });
+        
+        // Start Settings Screen
+        settingsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainSellerActivity.this, SettingsActivity.class));
             }
         });
     }

@@ -42,10 +42,12 @@ dependencies {
     // Image Loading From Firebase
     implementation 'com.squareup.picasso:picasso:2.71828'
 
-    // Firebase Authentication, Database and Storage
-    implementation 'com.google.firebase:firebase-auth:21.0.1'
-    implementation 'com.google.firebase:firebase-database:20.0.3'
-    implementation 'com.google.firebase:firebase-storage:20.0.0'
+    // Firebase Authentication, Realtime Database, Storage And FMC Messaging Library
+    implementation 'com.google.firebase:firebase-auth:21.0.2'
+    implementation 'com.google.firebase:firebase-database:20.0.4'
+    implementation 'com.google.firebase:firebase-storage:20.0.1'
+
+    implementation 'com.google.firebase:firebase-messaging:23.0.2'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

@@ -19,17 +19,22 @@
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:background="@null"
-            android:src="@drawable/ic_logout_white">
-        </ImageButton>
-
+            android:src="@drawable/ic_logout_white"/>
         <ImageButton
             android:id="@+id/editProfileBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_toStartOf="@id/logoutBtn"
             android:background="@null"
-            android:src="@drawable/ic_edit_white"></ImageButton>
-
+            android:src="@drawable/ic_edit_white"/>
+        <!-- Setting Button-->
+        <ImageButton
+            android:id="@+id/settingsBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toStartOf="@id/editProfileBtn"
+            android:background="@null"
+            android:src="@drawable/ic_settings_white" />
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileIv"
             android:layout_width="90dp"
@@ -39,17 +44,18 @@
             android:layout_marginEnd="15dp"
             android:src="@drawable/ic_store_gray"
             app:civ_border_color="@color/colorWhite"
-            app:civ_border_width="2dp"></de.hdodenhof.circleimageview.CircleImageView>
+            app:civ_border_width="2dp"/>
 
         <TextView
             android:id="@+id/nameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:layout_toEndOf="@id/profileIv"
             android:text="Name"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
-            android:textStyle="bold"></TextView>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/emailTv"
