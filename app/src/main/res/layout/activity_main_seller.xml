@@ -14,10 +14,17 @@
         android:background="@drawable/shape_rect01"
         android:padding="10dp">
         <ImageButton
+            android:id="@+id/moreBtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:src="@drawable/ic_more_white"
+            android:layout_alignParentEnd="true"/>
+        <ImageButton
             android:id="@+id/cartBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
+            android:layout_toStartOf="@id/moreBtn"
             android:background="@null"
             android:src="@drawable/ic_logout_white"/>
 
@@ -36,22 +43,6 @@
             android:layout_toStartOf="@id/editProfileBtn"
             android:background="@null"
             android:src="@drawable/ic_add_shopping_white" />
-        <!-- Reviews: Shop Reviews-->
-        <ImageButton
-            android:id="@+id/reviewsBtn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_star_white"
-            android:background="@null"
-            android:layout_toStartOf="@id/addProductBtn"/>
-        <!-- Settings Button-->
-        <ImageButton
-            android:id="@+id/settingsBtn"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_toStartOf="@id/reviewsBtn"
-            android:background="@null"
-            android:src="@drawable/ic_settings_white" />
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileIv"

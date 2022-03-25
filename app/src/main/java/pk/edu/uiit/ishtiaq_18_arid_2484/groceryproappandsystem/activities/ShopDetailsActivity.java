@@ -638,7 +638,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 // Put Required Headers
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Content-Type","application/json");
-                headers.put("Authorization","key" + Constants.FCM_TOPIC);
+                headers.put("Authorization","key" + Constants.FCM_KEY);
                 return headers;
             }
         };
