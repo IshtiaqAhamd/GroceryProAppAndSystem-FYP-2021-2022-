@@ -2,6 +2,7 @@ package pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.activities;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -18,8 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -32,7 +36,7 @@ public class AddPromotionCodeActivity extends AppCompatActivity {
     // Declaring  Add Promotion Code Activity  UI Views
     ImageButton backBtn;
     EditText promoCodeEt, promoDescriptionEt, promoPriceEt, minimumOrderPriceEt;
-    TextView expireDateTv;
+    TextView expireDateTv, titleTv;
     Button addBtn;
 
     // FirebaseAuth
@@ -40,6 +44,9 @@ public class AddPromotionCodeActivity extends AppCompatActivity {
 
     // Progress Dialog
     private ProgressDialog progressDialog;
+
+    String promoId;
+    boolean isUpdating = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +68,7 @@ public class AddPromotionCodeActivity extends AppCompatActivity {
         promoPriceEt = findViewById(R.id.promoPriceEt);
         minimumOrderPriceEt = findViewById(R.id.minimumOrderPriceEt);
         expireDateTv = findViewById(R.id.expireDateTv);
+        titleTv = findViewById(R.id.titleTv);
         addBtn = findViewById(R.id.addBtn);
 
         // Initialization Of FirebaseAuth
@@ -70,6 +78,58 @@ public class AddPromotionCodeActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait ...");
         progressDialog.setCanceledOnTouchOutside(false);
+
+        // Get Promo Id From Intent
+        Intent intent = getIntent();
+        if (intent.getStringExtra("promoId") != null){
+            // Came Here From Adapter To Update Record
+            promoId = intent.getStringExtra("promoId");
+
+            titleTv.setText("Update Promotion Code");
+            addBtn.setText("Update");
+
+            isUpdating = true;
+
+            loadPromoInfo(); // Load Promo Code  Info To Set In Our Views, So We Can Also Update Single Value
+        }
+        else {
+            // came Here From  Promo Codes List  Activity To Add New  Promo Code
+            titleTv.setText("Add Promotion Code");
+            addBtn.setText("Add");
+
+            isUpdating = false;
+        }
+    }
+
+    private void loadPromoInfo() {
+        // DB Path To Promo Code
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(firebaseAuth.getUid()).child("Promotions").child(promoId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // Get Info Of Promo Code
+                        String id = ""+snapshot.child("id").getValue();
+                        String timestamp = ""+snapshot.child("timestamp").getValue();
+                        String description = ""+snapshot.child("description").getValue();
+                        String promoCode = ""+snapshot.child("promoCode").getValue();
+                        String promoPrice = ""+snapshot.child("promoPrice").getValue();
+                        String minimumOrderPrice = ""+snapshot.child("minimumOrderPrice").getValue();
+                        String expireDate = ""+snapshot.child("expireDate").getValue();
+
+                        // Set Data
+                        promoCodeEt.setText(promoCode);
+                        promoDescriptionEt.setText(description);
+                        promoPriceEt.setText(promoPrice);
+                        minimumOrderPriceEt.setText(minimumOrderPrice);
+                        expireDateTv.setText(expireDate);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     // UI Views Performance Actions
@@ -93,6 +153,7 @@ public class AddPromotionCodeActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 inputData();
             }
         });
@@ -155,8 +216,48 @@ public class AddPromotionCodeActivity extends AppCompatActivity {
             Toast.makeText(this, "Enter Expire Date", Toast.LENGTH_SHORT).show();
             return; //Don't Proceed Further
         }
-        // All Fields Entered, Add Date To DB
-        addDataToDb();
+        // All Fields Entered, Add/Update Date To DB
+        if (isUpdating){
+            // Update Data
+            updateDataToDb();
+        }
+        else {
+            // Add Data
+            addDataToDb();
+        }
+    }
+
+    private void updateDataToDb() {
+        progressDialog.setMessage("Updating Promotion Code...");
+        progressDialog.dismiss();
+        // Setup Data To Add In DB
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("description", "" + description);
+        hashMap.put("promoCode", "" + promoCode);
+        hashMap.put("promoPrice", "" + promoPrice);
+        hashMap.put("minimumOrderPrice", "" + minimumOrderPrice);
+        hashMap.put("expireDate", "" + expireDate);
+
+        // Initialization DB Reference Users -> Current User -> Promotions -> PromoID -> Promo Date
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(firebaseAuth.getUid()).child("Promotions").child(promoId)
+                .updateChildren(hashMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        // Updated
+                        progressDialog.dismiss();
+                        Toast.makeText(AddPromotionCodeActivity.this, "Updated Promo Code", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Failed Updating
+                        progressDialog.dismiss();
+                        Toast.makeText(AddPromotionCodeActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void addDataToDb() {

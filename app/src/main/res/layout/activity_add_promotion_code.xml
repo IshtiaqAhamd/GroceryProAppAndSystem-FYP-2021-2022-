@@ -21,15 +21,16 @@
             android:layout_centerVertical="true"
             android:background="@null"
             android:src="@drawable/ic_back_white"/>
+
         <TextView
+            android:id="@+id/titleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
             android:text="Add Promotion Codes"
             android:textColor="@color/colorWhite"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <ImageView
