@@ -67,7 +67,7 @@ public class AddProductActivity extends AppCompatActivity {
     private String[] storagePermissions;
 
     // FirebaseAuth
-    private FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth;
 
     // Progress Dialog
     private ProgressDialog progressDialog;
