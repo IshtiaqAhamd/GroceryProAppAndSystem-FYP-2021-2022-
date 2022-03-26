@@ -212,6 +212,15 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                         String deliveryFee = ""+snapshot.child("deliveryFee").getValue();
                         String latitude = ""+snapshot.child("latitude").getValue();
                         String longitude = ""+snapshot.child("longitude").getValue();
+                        String discount = ""+snapshot.child("discount").getValue(); // In Previous Orders That Will Be null
+
+                        if (discount.equals("null") || discount.equals("0")){
+                            // Value Is Either null Or "0"
+                            discount = "& Discount $0";
+                        }
+                        else {
+                            discount = "& Discount $"+discount;
+                        }
 
                         // Convert Time Stamp To Proper Format
                         Calendar calendar = Calendar.getInstance();
@@ -232,7 +241,7 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                         //Set Data
                         orderIdTv.setText(orderId);
                         orderStatusTv.setText(orderStatus);
-                        amountTv.setText("$" + orderCost + "[Incuding Delivery Fee $" + deliveryFee + "]");
+                        amountTv.setText("$" + orderCost + "[Incuding Delivery Fee $" + deliveryFee +" " +discount+ "]");
                         dateTv.setText(formatedDate);
 
                         // findAddress(latitude, longitude); // To Find Delivery Address

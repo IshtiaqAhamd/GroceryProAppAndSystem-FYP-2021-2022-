@@ -70,17 +70,51 @@ public class AdapterCartItem extends RecyclerView.Adapter<AdapterCartItem.Holder
                 else {
                     Toast.makeText(context, "Removed Cart Item", Toast.LENGTH_LONG).show();
                 }
+                // Refresh List
                 cartItems.remove(position);
                 notifyItemChanged(position);
                 notifyDataSetChanged();
 
-                double tx = Double.parseDouble((((ShopDetailsActivity)context).allTotalPriceTv.getText().toString().trim().replace("$", "")));
-                double totalPrice = tx - Double.parseDouble(cost.replace("$", ""));
-                double deliveryFee = Double.parseDouble((((ShopDetailsActivity)context).deliveryFee.replace("$", "")));
-                double sTotalPrice = Double.parseDouble(String.format("%.2f", totalPrice))-Double.parseDouble(String.format("%.2f", deliveryFee));
-                ((ShopDetailsActivity)context).allTotalPrice=0.00;
-                ((ShopDetailsActivity)context).sTotalTv.setText("$"+String.format("%.2f", sTotalPrice));
-                ((ShopDetailsActivity)context).allTotalPriceTv.setText("$"+String.format("%.2f", Double.parseDouble(String.format("%.2f", totalPrice))));
+                // Adjust The  SubTotal After Product Remove
+                double subTotalWithoutDiscount = ((ShopDetailsActivity)context).allTotalPrice;
+                double subTotalAfterProductRemove = subTotalWithoutDiscount - Double.parseDouble(cost.replace("$",""));
+                ((ShopDetailsActivity)context).allTotalPrice = subTotalAfterProductRemove;
+                ((ShopDetailsActivity)context).sTotalTv.setText("$" + String.format("%.2f", ((ShopDetailsActivity)context).allTotalPrice));
+
+                // Once Subtotal is Updated..... Check Minimum Order Price Of Promo Code
+                double promoPrice = Double.parseDouble(((ShopDetailsActivity)context).promoPrice);
+                double deliveryFee = Double.parseDouble(((ShopDetailsActivity)context).deliveryFee.replace("$",""));
+
+                // Check If Promo Code Applied
+                if (((ShopDetailsActivity)context).isPromoCodeApplied){
+                    // Applied
+                    if (subTotalAfterProductRemove < Double.parseDouble(((ShopDetailsActivity)context).promoMinimumOrderPrice)){
+                        // Current Order Price Is Less Then Minimum required Price
+                        Toast.makeText(context, "This Code Is Valid For Order With Minimum Amount $"+((ShopDetailsActivity)context).promoMinimumOrderPrice, Toast.LENGTH_SHORT).show();
+                        ((ShopDetailsActivity)context).applyBtn.setVisibility(View.GONE);
+                        ((ShopDetailsActivity)context).promoDescriptionTv.setVisibility(View.GONE);
+                        ((ShopDetailsActivity)context).promoDescriptionTv.setText("");
+                        ((ShopDetailsActivity)context).discountTv.setText("$0");
+                        ((ShopDetailsActivity)context).isPromoCodeApplied = false;
+                        // Show New Net Total After Delivery Fee
+                        ((ShopDetailsActivity)context).allTotalPriceTv.setText("$" + String.format("%.2f", Double.parseDouble(String.format("%.2f", subTotalAfterProductRemove + deliveryFee))));
+                    }
+                    else {
+                        ((ShopDetailsActivity)context).applyBtn.setVisibility(View.VISIBLE);
+                        ((ShopDetailsActivity)context).promoDescriptionTv.setVisibility(View.VISIBLE);
+                        ((ShopDetailsActivity)context).promoDescriptionTv.setText(((ShopDetailsActivity)context).promoDescription);
+                        // Show New  Total Price After Adding Delivery Fee And Subtracting Promo Fee
+                        ((ShopDetailsActivity)context).isPromoCodeApplied = true;
+                        ((ShopDetailsActivity)context).allTotalPriceTv.setText("$" + String.format("%.2f",Double.parseDouble(String.format("%.2f", subTotalAfterProductRemove + deliveryFee - promoPrice))));
+
+                    }
+                }
+                else {
+                    // Not Applied
+                    ((ShopDetailsActivity)context).allTotalPriceTv.setText("$" + String.format("%.2f", Double.parseDouble(String.format("%.2f", subTotalAfterProductRemove + deliveryFee))));
+                }
+                // After Removing Item From Cart, Update Cart Count
+                ((ShopDetailsActivity)context).cartCount();
 
             }
         });
