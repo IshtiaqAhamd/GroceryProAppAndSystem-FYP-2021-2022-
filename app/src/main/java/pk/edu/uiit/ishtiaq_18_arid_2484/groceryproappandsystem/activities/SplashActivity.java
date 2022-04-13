@@ -51,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (user==null)
                 {
                     // User Not Logged In Start Login Activity
-                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
                     finish();
                 }
                 else

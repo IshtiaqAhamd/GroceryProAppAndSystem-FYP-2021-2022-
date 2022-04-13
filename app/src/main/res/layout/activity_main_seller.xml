@@ -13,20 +13,22 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_rect01"
         android:padding="10dp">
+        <!-- Setting Buttons -->
         <ImageButton
             android:id="@+id/moreBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
             android:background="@null"
-            android:src="@drawable/ic_more_white"
-            android:layout_alignParentEnd="true"/>
+            android:src="@drawable/ic_more_white" />
+
         <ImageButton
             android:id="@+id/cartBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_toStartOf="@id/moreBtn"
             android:background="@null"
-            android:src="@drawable/ic_logout_white"/>
+            android:src="@drawable/ic_logout_white" />
 
         <ImageButton
             android:id="@+id/editProfileBtn"
@@ -183,7 +185,7 @@
             android:layout_toStartOf="@id/filterOrderBtn"
             android:background="@drawable/shape_rect02"
             android:padding="10dp"
-            android:text="Showing All Orders"/>
+            android:text="Showing All Orders" />
         <!-- Filter Orders -->
         <ImageButton
             android:id="@+id/filterOrderBtn"

@@ -54,14 +54,16 @@ import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.DataBaseHelper;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters.AdapterCartItem;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters.AdapterProductUser;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.adapters.AdapterWishlistItem;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelCartItem;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelProduct;
+import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.models.ModelWishlistItem;
 
 public class ShopDetailsActivity extends AppCompatActivity {
     // Declaring  Shop Details Activity  UI Views
     ImageView shopIv;
     TextView shopNameTv, phoneTv, emailTv, openCloseTv, deliveryFeeTv, addressTv, filteredProductsTv, cartCountTv;
-    ImageButton callBtn, mapBtn, cartBtn, backBtn, filterProductBtn, reviewsBtn;
+    ImageButton callBtn, mapBtn, cartBtn, backBtn, filterProductBtn, reviewsBtn, wishlistBtn;
     EditText searchProductEt;
     RecyclerView productsRv;
     RatingBar ratingBar;
@@ -84,6 +86,9 @@ public class ShopDetailsActivity extends AppCompatActivity {
     // Cart
     ArrayList<ModelCartItem> cartItemList;
     AdapterCartItem adapterCartItem;
+    // Wishlist
+    ArrayList<ModelWishlistItem> wishlistItems;
+    AdapterWishlistItem adapterWishlistItem;
 
 
     @Override
@@ -113,6 +118,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         backBtn = findViewById(R.id.backBtn);
         reviewsBtn = findViewById(R.id.reviewsBtn);
         filterProductBtn = findViewById(R.id.filterProductBtn);
+        wishlistBtn = findViewById(R.id.wishlistBtn);
         searchProductEt = findViewById(R.id.searchProductEt);
         productsRv = findViewById(R.id.productsRv);
         cartCountTv = findViewById(R.id.cartCountTv);
@@ -137,53 +143,6 @@ public class ShopDetailsActivity extends AppCompatActivity {
         // And Open Cart Different Shop Then Cart Should Bbe Different
         // So Delete Cart Data Whenever User Open This Activity
         deleteCartData();
-
-    }
-
-    float ratingSum = 0;
-    private void loadReviews() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(shopUid).child("Ratings")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        // Clear List Before Adding Data Into It
-                        ratingSum = 0;
-                        for (DataSnapshot ds: snapshot.getChildren()){
-                            float rating = Float.parseFloat(""+ds.child("ratings").getValue()); // e.g. 4.5
-                            ratingSum = ratingSum + rating; // For Average, Add(Addition Of) All Ratings, Later Will Divide It By Number Of Reviews
-                        }
-
-                        long numberOfReviews = snapshot.getChildrenCount();
-                        float avgRating = ratingSum/numberOfReviews;
-                        ratingBar.setRating(avgRating);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-    }
-
-    private void deleteCartData() {
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
-    }
-
-    public void cartCount(){
-        // Keep It Public So We Can Access In Adapter
-        // Get Cart Count
-        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
-        int count = dataBaseHelper.cartCount().getCount();
-        if (count<=0){
-            // No Item In Cart, Hide Cart Count TextView
-            cartCountTv.setVisibility(View.GONE);
-        }
-        else {
-            // Have Items In Cart, Hide Cart Count TextView and Set Count
-            cartCountTv.setVisibility(View.VISIBLE);
-            cartCountTv.setText("" + count); // Concatenate With String, Because We can't Set Integer In TextView
-        }
 
     }
 
@@ -280,6 +239,60 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        wishlistBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show Cart Dialog
+                showWishlistDialog();
+            }
+        });
+    }
+
+    float ratingSum = 0;
+
+    private void loadReviews() {
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(shopUid).child("Ratings")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // Clear List Before Adding Data Into It
+                        ratingSum = 0;
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            float rating = Float.parseFloat(""+ds.child("ratings").getValue()); // e.g. 4.5
+                            ratingSum = ratingSum + rating; // For Average, Add(Addition Of) All Ratings, Later Will Divide It By Number Of Reviews
+                        }
+
+                        long numberOfReviews = snapshot.getChildrenCount();
+                        float avgRating = ratingSum/numberOfReviews;
+                        ratingBar.setRating(avgRating);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    private void deleteCartData() {
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+    }
+
+    public void cartCount(){
+        // Keep It Public So We Can Access In Adapter
+        // Get Cart Count
+        DataBaseHelper dataBaseHelper = new DataBaseHelper(this);
+        int count = dataBaseHelper.cartCount().getCount();
+        if (count<=0){
+            // No Item In Cart, Hide Cart Count TextView
+            cartCountTv.setVisibility(View.GONE);
+        }
+        else {
+            // Have Items In Cart, Hide Cart Count TextView and Set Count
+            cartCountTv.setVisibility(View.VISIBLE);
+            cartCountTv.setText("" + count); // Concatenate With String, Because We can't Set Integer In TextView
+        }
 
     }
 
@@ -351,7 +364,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
             String cost = res.getString(4);
             String quantity = res.getString(5);
 
-           //allTotalPriceTv = allTotalPrice + Double.parseDouble(cost);
+           allTotalPrice = allTotalPrice + Double.parseDouble(cost);
             ModelCartItem modelCartItem = new ModelCartItem(
                     "" + id,
                     ""+pId,
@@ -464,7 +477,8 @@ public class ShopDetailsActivity extends AppCompatActivity {
 
     public boolean isPromoCodeApplied = false;
     public String promoId, promoTimestamp, promoCode, promoDescription, promoExpDate, promoMinimumOrderPrice, promoPrice;
-    private void checkCodeAvailability(String promotionCode){ // promotionCode Is Promo Entered By Buyer/User
+    private void checkCodeAvailability(String promotionCode){
+        // promotionCode Is Promo Entered By Buyer/User
         // Progress Bar
         ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait");
@@ -585,7 +599,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         progressDialog.show();
 
         //For Order ID And Order Time
-        String timestamp = ""+System.currentTimeMillis();
+        final String timestamp = ""+System.currentTimeMillis();
 
         String cost = allTotalPriceTv.getText().toString().trim().replace("$", ""); // Remove $ If Contains
         // Add Latitude, Longitude Of User To Each Other | Delete Previous Orders From Firebase or Add Manually To Them
@@ -639,6 +653,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
                         Toast.makeText(ShopDetailsActivity.this, "Order Placed Successfully", Toast.LENGTH_SHORT).show();
 
                         preparedNotificationMessage(timestamp);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -832,12 +847,33 @@ public class ShopDetailsActivity extends AppCompatActivity {
                 // Put Required Headers
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Content-Type","application/json");
-                headers.put("Authorization","key" + Constants.FCM_KEY);
+                headers.put("Authorization","key=" + Constants.FCM_KEY);
                 return headers;
             }
         };
 
-        // Enque The Volley Request
+        // Enqueue The Volley Request
         Volley.newRequestQueue(this).add(jsonObjectRequest);
+    }
+
+    private void showWishlistDialog(){
+        // Initialization List
+        wishlistItems = new ArrayList<>();
+
+        // Inflate Cart Layout
+        View view = LayoutInflater.from(this).inflate(R.layout.dialog_wishlist, null);
+
+        // Dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Set View To Dialog
+        builder.setView(view);
+
+        // Setup Adapter
+        adapterWishlistItem = new AdapterWishlistItem(this,wishlistItems);
+        // Set To Recyclerview
+        // Show Dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
     }
 }

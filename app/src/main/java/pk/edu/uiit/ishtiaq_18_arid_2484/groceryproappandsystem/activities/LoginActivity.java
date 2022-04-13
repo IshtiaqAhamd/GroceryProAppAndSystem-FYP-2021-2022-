@@ -91,19 +91,21 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private String email, password;
+    String email, password;
     private void loginUser() {
         email = emailEt.getText().toString().trim();
         password = passwordEt.getText().toString().trim();
         // Validation
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches())
         {
-            Toast.makeText(this, "Please Enter Valid Email!", Toast.LENGTH_SHORT).show();
+            emailEt.setError("Invalid Email");
+            Toast.makeText(this, "Please Enter Valid Email", Toast.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(password))
         {
-            Toast.makeText(this, "Enter Password!", Toast.LENGTH_SHORT).show();
+            passwordEt.setError("Incorrect Password");
+            Toast.makeText(this, "Please Enter Password", Toast.LENGTH_SHORT).show();
             return;
         }
         progressDialog.setMessage("Logging In...");
@@ -154,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkUserType() {
         //If User Is Seller, Start Main Seller Activity
-        //If User Is Buyer, start Main User Activity
+        //If User Is Customer, start Main User Activity
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.orderByChild("uid").equalTo(firebaseAuth.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {

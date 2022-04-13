@@ -55,15 +55,29 @@
                 android:minLines="2"
                 android:text="The Product Description"
                 android:textColor="@color/colorBlack" />
+
             <TextView
                 android:id="@+id/addToCartTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add To Cart"
-                android:gravity="center_vertical"
                 android:layout_below="@id/descriptionTv"
+                android:gravity="center_vertical"
+                android:text=" Add To Cart"
                 android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
                 app:drawableStartCompat="@drawable/ic_add_shopping_primary" />
+
+            <TextView
+                android:id="@+id/addToWishlistTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/addToCartTv"
+                android:layout_marginTop="20dp"
+                android:gravity="center_horizontal"
+                android:text=" Add To Wish List"
+                android:textColor="@color/colorGreen"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/ic_wishlist_green" />
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

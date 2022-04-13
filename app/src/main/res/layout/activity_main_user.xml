@@ -27,6 +27,7 @@
             android:layout_toStartOf="@id/logoutBtn"
             android:background="@null"
             android:src="@drawable/ic_edit_white"/>
+
         <!-- Setting Button-->
         <ImageButton
             android:id="@+id/settingsBtn"

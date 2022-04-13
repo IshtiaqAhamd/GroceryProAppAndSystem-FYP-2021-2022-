@@ -143,9 +143,9 @@
 
             <TextView
                 android:id="@+id/discountTv"
-                android:layout_below="@id/sTotalLabelTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/sTotalLabelTv"
                 android:layout_alignParentEnd="true"
                 android:padding="5dp"
                 android:text="$2.00"

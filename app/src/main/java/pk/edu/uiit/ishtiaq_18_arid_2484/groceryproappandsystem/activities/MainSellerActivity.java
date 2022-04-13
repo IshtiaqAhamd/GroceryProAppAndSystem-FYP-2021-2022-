@@ -50,21 +50,16 @@ public class MainSellerActivity extends AppCompatActivity {
     ImageView profileIv;
     RelativeLayout productsRl, ordersRl;
     RecyclerView productsRv, ordersRv;
-
     // FirebaseAuth
     private FirebaseAuth firebaseAuth;
-
     // Progress Dialog
     private ProgressDialog progressDialog;
-
     // Products
     ArrayList<ModelProduct> productList;
     AdapterProductSeller adapterProductSeller;
-
     // Orders
     ArrayList<ModelOrderShop> orderShopArrayList;
     AdapterOrderShop adapterOrderShop;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,62 +103,6 @@ public class MainSellerActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please Wait...");
         progressDialog.setCanceledOnTouchOutside(false);
-    }
-
-    private void loadAllOrders() {
-        // Initialization Of List
-        orderShopArrayList = new ArrayList<>();
-
-        // Load Orders Of Shop
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(firebaseAuth.getUid()).child("Orders")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        // Clear List Before Adding New Data In It
-                        orderShopArrayList.clear();
-                        for (DataSnapshot ds: snapshot.getChildren()){
-                            ModelOrderShop modelOrderShop = ds.getValue(ModelOrderShop.class);
-                            // Add To List
-                            orderShopArrayList.add(modelOrderShop);
-                        }
-                        // Setup Adapter
-                        adapterOrderShop = new AdapterOrderShop(MainSellerActivity.this, orderShopArrayList);
-                        // Set Adapter To Recyclerview
-                        ordersRv.setAdapter(adapterOrderShop);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-    }
-
-    private void loadAllProducts() {
-        productList = new ArrayList<>();
-        // Get All Products
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.child(firebaseAuth.getUid()).child("Products")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        // Before Getting Reset List
-                        for (DataSnapshot ds: snapshot.getChildren()){
-                            ModelProduct modelProduct = ds.getValue(ModelProduct.class);
-                            productList.add(modelProduct);
-                        }
-                        // Setup Adapter
-                        adapterProductSeller = new AdapterProductSeller(MainSellerActivity.this, productList);
-                        // Set Adapter
-                        productsRv.setAdapter(adapterProductSeller);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
     }
 
     // UI Views Performance Actions
@@ -250,7 +189,7 @@ public class MainSellerActivity extends AppCompatActivity {
                                 }
                             }
                         })
-                .show();
+                        .show();
             }
         });
         filterOrderBtn.setOnClickListener(new View.OnClickListener() {
@@ -320,6 +259,62 @@ public class MainSellerActivity extends AppCompatActivity {
         });
     }
 
+    private void loadAllOrders() {
+        // Initialization Of List
+        orderShopArrayList = new ArrayList<>();
+
+        // Load Orders Of Shop
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(firebaseAuth.getUid()).child("Orders")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // Clear List Before Adding New Data In It
+                        orderShopArrayList.clear();
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            ModelOrderShop modelOrderShop = ds.getValue(ModelOrderShop.class);
+                            // Add To List
+                            orderShopArrayList.add(modelOrderShop);
+                        }
+                        // Setup Adapter
+                        adapterOrderShop = new AdapterOrderShop(MainSellerActivity.this, orderShopArrayList);
+                        // Set Adapter To Recyclerview
+                        ordersRv.setAdapter(adapterOrderShop);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
+    private void loadAllProducts() {
+        productList = new ArrayList<>();
+        // Get All Products
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
+        reference.child(firebaseAuth.getUid()).child("Products")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // Before Getting Reset List
+                        for (DataSnapshot ds: snapshot.getChildren()){
+                            ModelProduct modelProduct = ds.getValue(ModelProduct.class);
+                            productList.add(modelProduct);
+                        }
+                        // Setup Adapter
+                        adapterProductSeller = new AdapterProductSeller(MainSellerActivity.this, productList);
+                        // Set Adapter
+                        productsRv.setAdapter(adapterProductSeller);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
     private void loadFilteredProducts(String selected) {
         productList = new ArrayList<>();
         // Get All Products
@@ -364,6 +359,7 @@ public class MainSellerActivity extends AppCompatActivity {
         tabOrdersTv.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
     }
+
     private void showOrdersUI() {
         // Show Orders UI and hide Products UI
         productsRl.setVisibility(View.GONE);

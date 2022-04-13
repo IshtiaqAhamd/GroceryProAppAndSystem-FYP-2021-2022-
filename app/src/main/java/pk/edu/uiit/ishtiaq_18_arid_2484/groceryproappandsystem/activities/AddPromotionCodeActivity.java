@@ -172,7 +172,7 @@ public class AddPromotionCodeActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 DecimalFormat mFormat = new DecimalFormat("00");
                 String pDay = mFormat.format(dayOfMonth);
-                String pMonth = mFormat.format(monthOfYear);
+                String pMonth = mFormat.format(monthOfYear+1);
                 String pYear = ""+year;
                 String pDate = pDay +"/"+ pMonth +"/"+ pYear; // e.g. 25/03/2022
                 expireDateTv.setText(pDate);

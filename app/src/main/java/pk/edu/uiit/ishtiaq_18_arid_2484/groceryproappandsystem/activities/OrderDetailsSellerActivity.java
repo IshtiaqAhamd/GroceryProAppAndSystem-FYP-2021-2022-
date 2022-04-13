@@ -359,7 +359,7 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
         String NOTIFICATION_TOPIC = "/topics/" + Constants.FCM_TOPIC; // Must Be Same Subscribed By User
         String NOTIFICATION_TITLE = "Your Order " + orderId;
         String NOTIFICATION_MESSAGE = ""+message;
-        String NOTIFICATION_TYPE = "OrderStatusNotification";
+        String NOTIFICATION_TYPE = "OrderStatusChanged";
 
         // Prepare JSON (What To Send And Where To Sand)
         JSONObject notificationJo = new JSONObject();

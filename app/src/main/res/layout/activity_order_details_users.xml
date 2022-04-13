@@ -37,7 +37,7 @@
             android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:background="@null"
-            android:src="@drawable/ic_rate_white"/>
+            android:src="@drawable/ic_rate_white" />
 
     </RelativeLayout>
     <androidx.cardview.widget.CardView

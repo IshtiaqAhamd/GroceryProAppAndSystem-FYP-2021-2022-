@@ -89,4 +89,5 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_next_gray" />
     </RelativeLayout>
+
 </androidx.cardview.widget.CardView>

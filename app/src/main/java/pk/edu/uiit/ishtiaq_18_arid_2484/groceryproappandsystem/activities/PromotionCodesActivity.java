@@ -120,7 +120,7 @@ public class PromotionCodesActivity extends AppCompatActivity {
                         }
                         else if (which==2){
                             // All Clicked
-                            filteredTv.setText("Expired Promotion Codes");
+                            filteredTv.setText("Not Expired Promotion Codes");
                             loadNotExpiredPromoCodes();
                         }
                     }
@@ -163,7 +163,7 @@ public class PromotionCodesActivity extends AppCompatActivity {
         DecimalFormat mFormat = new DecimalFormat("00");
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
+        int month = calendar.get(Calendar.MONTH)+1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         String todayDate = day +"/"+ month +"/"+ year; // e.g. 26/03/2022
         // Initialization List
@@ -188,14 +188,14 @@ public class PromotionCodesActivity extends AppCompatActivity {
                                 Date currentDate = sdformat.parse(todayDate);
                                 Date expireDate = sdformat.parse(expDate);
                                 if (expireDate.compareTo(currentDate) > 0){
-                                    // Date 1 Occurs  After Date 2
+                                    // Date 1 Occurs After Date 2
                                 }
                                 else if (expireDate.compareTo(currentDate) < 0){
                                     // Date 1 Occurs  Before Date 2 (i.e. Expired)
                                     // Add List
                                     promotionArrayList.add(modelPromotion);
                                 }
-                                else if (expireDate.compareTo(currentDate) < 0){
+                                else if (expireDate.compareTo(currentDate) == 0){
                                     // Both Date Equals
                                 }
                             }
@@ -221,7 +221,7 @@ public class PromotionCodesActivity extends AppCompatActivity {
         DecimalFormat mFormat = new DecimalFormat("00");
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
+        int month = calendar.get(Calendar.MONTH)+1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         String todayDate = day +"/"+ month +"/"+ year; // e.g. 26/03/2022
         // Initialization List
@@ -254,7 +254,7 @@ public class PromotionCodesActivity extends AppCompatActivity {
                                     // Date 1 Occurs  Before Date 2 (i.e. Expired)
 
                                 }
-                                else if (expireDate.compareTo(currentDate) < 0){
+                                else if (expireDate.compareTo(currentDate) == 0){
                                     // Both Date Equals
                                     // Add List
                                     promotionArrayList.add(modelPromotion);
