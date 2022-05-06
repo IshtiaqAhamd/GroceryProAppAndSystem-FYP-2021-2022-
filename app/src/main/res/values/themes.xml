@@ -20,4 +20,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Logout_Dialog">
+        <item name="android:windowBackground">@drawable/empty_bac</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowFixedWidthMajor">80%</item>
+        <item name="windowActionBar">false</item>
+    </style>
 </resources>

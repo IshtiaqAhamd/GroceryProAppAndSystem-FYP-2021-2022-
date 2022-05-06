@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GroceryProAppAndSystem.NoActionBar">
         <activity
+            android:name=".activities.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ChatHomeActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.HomeActivity"
             android:exported="false" />
         <activity

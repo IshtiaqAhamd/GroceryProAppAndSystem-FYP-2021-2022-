@@ -63,7 +63,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
     // Declaring  Shop Details Activity  UI Views
     ImageView shopIv;
     TextView shopNameTv, phoneTv, emailTv, openCloseTv, deliveryFeeTv, addressTv, filteredProductsTv, cartCountTv;
-    ImageButton callBtn, mapBtn, cartBtn, backBtn, filterProductBtn, reviewsBtn, wishlistBtn;
+    ImageButton callBtn, mapBtn, cartBtn, backBtn, filterProductBtn, reviewsBtn, wishlistBtn, chatBtn;
     EditText searchProductEt;
     RecyclerView productsRv;
     RatingBar ratingBar;
@@ -119,6 +119,7 @@ public class ShopDetailsActivity extends AppCompatActivity {
         reviewsBtn = findViewById(R.id.reviewsBtn);
         filterProductBtn = findViewById(R.id.filterProductBtn);
         wishlistBtn = findViewById(R.id.wishlistBtn);
+        chatBtn = findViewById(R.id.chatBtn);
         searchProductEt = findViewById(R.id.searchProductEt);
         productsRv = findViewById(R.id.productsRv);
         cartCountTv = findViewById(R.id.cartCountTv);
@@ -244,6 +245,13 @@ public class ShopDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Show Cart Dialog
                 showWishlistDialog();
+            }
+        });
+
+        chatBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ShopDetailsActivity.this, ChatHomeActivity.class));
             }
         });
     }

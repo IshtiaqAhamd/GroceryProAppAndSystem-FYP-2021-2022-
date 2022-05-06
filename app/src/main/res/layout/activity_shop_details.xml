@@ -91,10 +91,11 @@
                 android:textColor="@color/colorWhite"
                 android:layout_marginStart="3dp"
                 android:layout_marginTop="10dp"/>
+
             <LinearLayout
-                android:layout_alignParentBottom="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
@@ -102,16 +103,24 @@
                     android:id="@+id/callBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_call_white"
-                    android:background="@null"/>
+                    android:background="@null"
+                    android:src="@drawable/ic_call_white" />
+
+                <ImageButton
+                    android:id="@+id/chatBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:layout_marginStart="5dp"
+                    android:src="@drawable/ic_chat_white" />
 
                 <ImageButton
                     android:id="@+id/mapBtn"
-                    android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_map_white"
-                    android:background="@null"/>
+                    android:layout_marginStart="5dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_map_white" />
             </LinearLayout>
         </RelativeLayout>
 
