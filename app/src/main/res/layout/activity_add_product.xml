@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activities.AddProductActivity">
+
     <!--My Custom Toolbar-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:padding="10dp"
         android:background="@drawable/shape_rect01">
-
         <ImageButton
             android:id="@+id/backBtn"
             android:layout_width="30dp"
@@ -29,12 +29,10 @@
             android:textStyle="bold">
         </TextView>
     </RelativeLayout>
-
     <!--Form To Input Data-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/productIconIv"
             android:layout_width="100dp"
@@ -43,8 +41,7 @@
             android:layout_marginTop="20dp"
             android:src="@drawable/ic_add_shopping_primary"
             app:civ_border_color="@color/colorPrimary"
-            app:civ_border_width="3dp"></de.hdodenhof.circleimageview.CircleImageView>
-
+            app:civ_border_width="3dp"/>
         <EditText
             android:id="@+id/titleEt"
             android:layout_width="match_parent"
@@ -59,8 +56,7 @@
             android:drawablePadding="10dp"
             android:hint="Title"
             android:inputType="textPersonName|textCapWords"
-            android:padding="10dp"></EditText>
-
+            android:padding="10dp"/>
         <EditText
             android:id="@+id/descriptionEt"
             android:layout_width="match_parent"
@@ -75,8 +71,7 @@
             android:drawablePadding="10dp"
             android:hint="Description"
             android:inputType="textCapSentences|textMultiLine"
-            android:padding="10dp"></EditText>
-
+            android:padding="10dp"/>
         <TextView
             android:id="@+id/categoryTv"
             android:layout_width="match_parent"
@@ -93,8 +88,7 @@
             android:padding="10dp"
             app:drawableEndCompat="@drawable/ic_down_gray"
             app:drawableStartCompat="@drawable/ic_categories_gray"
-            tools:ignore="TextViewEdits"></TextView>
-
+            tools:ignore="TextViewEdits"/>
         <EditText
             android:id="@+id/quantityEt"
             android:layout_width="match_parent"
@@ -109,8 +103,7 @@
             android:drawablePadding="10dp"
             android:hint="Quantity e.g. kg, g etc"
             android:inputType="textCapWords"
-            android:padding="10dp"></EditText>
-
+            android:padding="10dp"/>
         <EditText
             android:id="@+id/priceEt"
             android:layout_width="match_parent"
@@ -125,18 +118,17 @@
             android:drawablePadding="10dp"
             android:hint="Price"
             android:inputType="numberDecimal"
-            android:padding="10dp"></EditText>
+            android:padding="10dp"/>
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/discountSwitch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/priceEt"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp"
-            android:text="Discount"></androidx.appcompat.widget.SwitchCompat>
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:text="Discount"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/discountPriceEt"
@@ -152,8 +144,7 @@
             android:drawablePadding="10dp"
             android:hint="Discount Price"
             android:inputType="numberDecimal"
-            android:padding="10dp"></EditText>
-
+            android:padding="10dp"/>
         <EditText
             android:id="@+id/discountNoteEt"
             android:layout_width="match_parent"
@@ -168,8 +159,7 @@
             android:drawablePadding="10dp"
             android:hint="Discount Note e.g. 20% Off"
             android:inputType="textCapSentences"
-            android:padding="10dp"></EditText>
-
+            android:padding="10dp"/>
         <Button
             android:id="@+id/addProductBtn"
             android:layout_width="wrap_content"
@@ -178,6 +168,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:minWidth="150dp"
-            android:text="Add Product"></Button>
+            android:text="Add Product"/>
     </RelativeLayout>
 </LinearLayout>

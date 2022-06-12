@@ -21,7 +21,6 @@
             android:layout_alignParentEnd="true"
             android:background="@null"
             android:src="@drawable/ic_more_white" />
-
         <ImageButton
             android:id="@+id/cartBtn"
             android:layout_width="40dp"
@@ -29,7 +28,6 @@
             android:layout_toStartOf="@id/moreBtn"
             android:background="@null"
             android:src="@drawable/ic_logout_white" />
-
         <ImageButton
             android:id="@+id/editProfileBtn"
             android:layout_width="40dp"
@@ -44,8 +42,7 @@
             android:layout_height="40dp"
             android:layout_toStartOf="@id/editProfileBtn"
             android:background="@null"
-            android:src="@drawable/ic_add_shopping_white" />
-
+            android:src="@drawable/ic_add_shopping_white"/>
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileIv"
             android:layout_width="90dp"
@@ -56,7 +53,6 @@
             android:src="@drawable/ic_store_gray"
             app:civ_border_color="@color/colorWhite"
             app:civ_border_width="2dp"/>
-
         <TextView
             android:id="@+id/nameTv"
             android:layout_width="wrap_content"
@@ -67,17 +63,14 @@
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             android:textStyle="bold" />
-
         <TextView
             android:id="@+id/shopNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/nameTv"
-
             android:layout_toEndOf="@id/profileIv"
             android:text="Shop Name"
             android:textColor="@color/colorWhite"/>
-
         <TextView
             android:id="@+id/emailTv"
             android:layout_width="wrap_content"
@@ -113,10 +106,8 @@
                 android:gravity="center"
                 android:text="Orders"
                 android:textColor="@color/colorWhite"/>
-
         </LinearLayout>
     </RelativeLayout>
-
     <!-- Products -->
     <RelativeLayout
         android:visibility="gone"
@@ -159,7 +150,6 @@
             android:text="Showing All"
             android:layout_marginStart="5dp"
             android:layout_marginBottom="5dp"/>
-
         <!-- RecyclerView: Show Products-->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/productsRv"
@@ -169,7 +159,6 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/row_product_seller"/>
     </RelativeLayout>
-
     <!-- Orders -->
     <RelativeLayout
         android:id="@+id/ordersRl"
@@ -208,5 +197,4 @@
             tools:listitem="@layout/row_order_seller"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </RelativeLayout>
-
 </RelativeLayout>

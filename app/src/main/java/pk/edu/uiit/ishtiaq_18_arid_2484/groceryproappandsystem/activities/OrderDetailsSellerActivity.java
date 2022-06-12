@@ -398,6 +398,7 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 // Notification Failed
+                Toast.makeText(OrderDetailsSellerActivity.this, "Ishtiaq!! "+error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }){
             @Override
@@ -406,12 +407,12 @@ public class OrderDetailsSellerActivity extends AppCompatActivity {
                 // Put Required Headers
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Content-Type","application/json");
-                headers.put("Authorization","key" + Constants.FCM_TOPIC);
+                headers.put("Authorization","key" + Constants.FCM_KEY);
                 return headers;
             }
         };
 
-        // Enque The Volley Request
+        // Enqueue The Volley Request
         Volley.newRequestQueue(this).add(jsonObjectRequest);
     }
 }

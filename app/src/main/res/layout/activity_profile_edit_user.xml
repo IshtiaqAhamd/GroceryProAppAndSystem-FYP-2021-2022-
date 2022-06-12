@@ -14,32 +14,28 @@
         android:layout_height="80dp"
         android:background="@drawable/shape_rect01"
         android:padding="10dp">
-
         <ImageButton
             android:id="@+id/backBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@null"
-            android:src="@drawable/ic_back_white"></ImageButton>
-
+            android:src="@drawable/ic_back_white"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Profile Edit"
+            android:text="Edit Profile"
             android:textColor="@color/colorWhite"
             android:textSize="32sp"
-            android:textStyle="bold"></TextView>
-
+            android:textStyle="bold"/>
         <ImageButton
             android:id="@+id/gpsBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:background="@null"
-            android:src="@drawable/ic_gps_white"></ImageButton>
+            android:src="@drawable/ic_gps_white"/>
     </RelativeLayout>
-
     <ScrollView
         android:layout_below="@id/toolbarRl"
         android:layout_width="match_parent"
@@ -57,8 +53,7 @@
                 android:layout_marginTop="20dp"
                 android:src="@drawable/ic_person_gray"
                 app:civ_border_color="@color/colorPrimary"
-                app:civ_border_width="2dp">
-            </de.hdodenhof.circleimageview.CircleImageView>
+                app:civ_border_width="2dp"/>
             <EditText
                 android:id="@+id/nameEt"
                 android:layout_width="match_parent"
@@ -72,8 +67,7 @@
                 android:drawablePadding="5dp"
                 android:hint="Full Name"
                 android:inputType="textPersonName|textCapWords"
-                android:padding="10dp">
-            </EditText>
+                android:padding="10dp"/>
             <EditText
                 android:id="@+id/phoneEt"
                 android:hint="Phone"
@@ -84,8 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:inputType="phone"
-                android:background="@drawable/shape_rect02">
-            </EditText>
+                android:background="@drawable/shape_rect02"/>
             <LinearLayout
                 android:id="@+id/addressLl"
                 android:layout_margin="5dp"
@@ -104,8 +97,7 @@
                     android:layout_margin="5dp"
                     android:inputType="textPostalAddress"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_rect02">
-                </EditText>
+                    android:background="@drawable/shape_rect02"/>
                 <EditText
                     android:id="@+id/stateEt"
                     android:hint="State"
@@ -117,8 +109,7 @@
                     android:layout_margin="5dp"
                     android:inputType="textPostalAddress"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_rect02">
-                </EditText>
+                    android:background="@drawable/shape_rect02"/>
                 <EditText
                     android:id="@+id/cityEt"
                     android:hint="City"
@@ -130,8 +121,7 @@
                     android:layout_margin="5dp"
                     android:inputType="textPostalAddress"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_rect02">
-                </EditText>
+                    android:background="@drawable/shape_rect02"/>
             </LinearLayout>
             <EditText
                 android:id="@+id/addressEt"
@@ -143,9 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:inputType="textPostalAddress|textMultiLine"
-                android:background="@drawable/shape_rect02">
-            </EditText>
-
+                android:background="@drawable/shape_rect02"/>
             <Button
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/updateBtn"
@@ -153,10 +141,7 @@
                 android:layout_height="wrap_content"
                 android:text="Update"
                 android:minWidth="120dp"
-                style="@style/Widget.AppCompat.Button.Colored">
-            </Button>
-
+                style="@style/Widget.AppCompat.Button.Colored"/>
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>

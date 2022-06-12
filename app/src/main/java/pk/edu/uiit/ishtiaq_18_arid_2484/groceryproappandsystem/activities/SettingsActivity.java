@@ -35,8 +35,8 @@ public class SettingsActivity extends AppCompatActivity {
     // FirebaseAuth
     FirebaseAuth firebaseAuth;
 
-    SharedPreferences sp;
-    SharedPreferences.Editor spEditor;
+    private SharedPreferences sp;
+    private SharedPreferences.Editor spEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +125,6 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void unSubscribeToTopic(){
-
         FirebaseMessaging.getInstance().unsubscribeFromTopic(Constants.FCM_TOPIC)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

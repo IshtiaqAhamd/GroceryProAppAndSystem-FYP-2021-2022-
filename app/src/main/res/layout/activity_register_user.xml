@@ -19,17 +19,15 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@null"
-            android:src="@drawable/ic_back_white"></ImageButton>
+            android:src="@drawable/ic_back_white"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Register User"
+            android:text="Register Customer"
             android:textColor="@color/colorWhite"
             android:textSize="32sp"
-            android:textStyle="bold">
-        </TextView>
-
+            android:textStyle="bold"/>
         <ImageButton
             android:id="@+id/gpsBtn"
             android:layout_width="40dp"
@@ -82,8 +80,7 @@
                 android:drawablePadding="5dp"
                 android:hint="Full Name"
                 android:inputType="textPersonName|textCapWords"
-                android:padding="10dp">
-            </EditText>
+                android:padding="10dp"/>
             <EditText
                 android:id="@+id/phoneEt"
                 android:hint="Phone"
@@ -94,8 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:inputType="phone"
-                android:background="@drawable/shape_rect02">
-            </EditText>
+                android:background="@drawable/shape_rect02"/>
             <LinearLayout
                 android:id="@+id/addressLl"
                 android:layout_margin="5dp"
@@ -114,8 +110,7 @@
                     android:layout_margin="5dp"
                     android:inputType="textPostalAddress"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_rect02">
-                </EditText>
+                    android:background="@drawable/shape_rect02"/>
                 <EditText
                     android:id="@+id/stateEt"
                     android:hint="State"
@@ -127,8 +122,7 @@
                     android:layout_margin="5dp"
                     android:inputType="textPostalAddress"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_rect02">
-                </EditText>
+                    android:background="@drawable/shape_rect02"/>
                 <EditText
                     android:id="@+id/cityEt"
                     android:hint="City"
@@ -140,8 +134,7 @@
                     android:layout_margin="5dp"
                     android:inputType="textPostalAddress"
                     android:layout_weight="1"
-                    android:background="@drawable/shape_rect02">
-                </EditText>
+                    android:background="@drawable/shape_rect02"/>
             </LinearLayout>
             <EditText
                 android:id="@+id/addressEt"
@@ -153,8 +146,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:inputType="textPostalAddress|textMultiLine"
-                android:background="@drawable/shape_rect02">
-            </EditText>
+                android:background="@drawable/shape_rect02"/>
             <EditText
                 android:id="@+id/emailEt"
                 android:layout_below="@id/addressEt"
@@ -166,8 +158,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:inputType="textEmailAddress"
-                android:background="@drawable/shape_rect02">
-            </EditText>
+                android:background="@drawable/shape_rect02"/>
             <EditText
                 android:id="@+id/passwordEt"
                 android:layout_width="match_parent"
@@ -181,8 +172,7 @@
                 android:drawablePadding="5dp"
                 android:hint="Password"
                 android:inputType="textPassword"
-                android:padding="10dp">
-            </EditText>
+                android:padding="10dp"/>
             <EditText
                 android:id="@+id/cPasswordEt"
                 android:layout_width="match_parent"
@@ -196,8 +186,7 @@
                 android:drawablePadding="5dp"
                 android:hint="Confirm Password"
                 android:inputType="textPassword"
-                android:padding="10dp">
-            </EditText>
+                android:padding="10dp"/>
             <Button
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/registerBtn"
@@ -205,8 +194,7 @@
                 android:layout_height="wrap_content"
                 android:text="Register"
                 android:minWidth="120dp"
-                style="@style/Widget.AppCompat.Button.Colored">
-            </Button>
+                style="@style/Widget.AppCompat.Button.Colored"/>
             <TextView
                 android:id="@+id/registerSellerTv"
                 android:layout_width="wrap_content"
@@ -216,9 +204,8 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
-                android:text="Are You A Seller? Register As Seller">
-            </TextView>
+                android:textColor="@color/colorPrimary"
+                android:text="Are you a seller? Register As Seller"/>
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>

@@ -50,40 +50,31 @@ import java.util.Locale;
 import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
 
 public class RegisterUserActivity extends AppCompatActivity implements LocationListener {
-    // Declaring Register User Activity UI Views
+    // Declaring Register Customer Activity UI Views
     ImageButton backBtn,gpsBtn;
     ImageView profileIv;
     EditText nameEt, phoneEt, countryEt, stateEt, cityEt, addressEt, emailEt, passwordEt, cPasswordEt;
     Button registerBtn;
     TextView registerSellerTv;
-
-
     // Permission Constant
     private static final int LOCATION_REQUEST_CODE = 100;
     private static final int CAMERA_REQUEST_CODE = 200;
     private static final int STORAGE_REQUEST_CODE = 300;
-
     // Image Pick Constant
     private static final int IMAGE_PICK_GALLERY_CODE = 400;
     private static final int IMAGE_PICK_CAMERA_CODE = 500;
-
     // Image Picked URI
     private Uri image_uri;
-
     // Permission Arrays
     private String[] locationPermissions;
     private String[] cameraPermissions;
     private String[] storagePermissions;
-
     // Latitude And Longitude
     private  double latitude =0.0, longitude =0.0;
-
     // Location Manager
     LocationManager locationManager;
-
     // FirebaseAuth
     private FirebaseAuth firebaseAuth;
-
     // Progress Dialog
     private ProgressDialog progressDialog;
 
@@ -173,6 +164,7 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
     }
 
     String fullName, phoneNumber, country, state, city, address, email, password, confirmPassword;
+
     private void inputData() {
         // Get Data From Views
         fullName = nameEt.getText().toString().trim();
@@ -218,7 +210,6 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
         }
         createAccount();
     }
-
     private void createAccount() {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
@@ -241,7 +232,6 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
                     }
                 });
     }
-
     private void saverFirebaseData() {
         progressDialog.setTitle("Saving Account Information...");
         String timeStamp = ""+System.currentTimeMillis();
@@ -353,7 +343,6 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
                     });
         }
     }
-
     private void showImagePickDialog() {
         // Options To Display In Dialog
         String[] options = {"Camera", "Gallery"};
@@ -396,6 +385,23 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
                 }).show();
     }
 
+    private void pickFromGallery(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
+    }
+    private void pickFromCamera() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MediaStore.Images.Media.TITLE, "Temp_Image Title");
+        contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Temp_Image Description");
+
+        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
+        startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
+    }
+
     public boolean checkLocationPermission(){
         boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) ==
                 (PackageManager.PERMISSION_GRANTED);
@@ -404,7 +410,6 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
     public void requestLocationPermission(){
         ActivityCompat.requestPermissions(this, locationPermissions, LOCATION_REQUEST_CODE);
     }
-
     private boolean checkStoragePermission() {
         boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
         return result;
@@ -412,7 +417,6 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
     private void requestStoragePermission() {
         ActivityCompat.requestPermissions(this, storagePermissions, STORAGE_REQUEST_CODE);
     }
-
     private boolean checkCameraPermission() {
         boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)==(PackageManager.PERMISSION_GRANTED);
         boolean result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)==(PackageManager.PERMISSION_GRANTED);
@@ -450,23 +454,6 @@ public class RegisterUserActivity extends AppCompatActivity implements LocationL
             Toast.makeText(this, ""+ exception.getMessage(), Toast.LENGTH_SHORT).show();
 
         }
-    }
-
-    private void pickFromGallery(){
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, IMAGE_PICK_GALLERY_CODE);
-    }
-    private void pickFromCamera() {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.Images.Media.TITLE, "Temp_Image Title");
-        contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Temp_Image Description");
-
-        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
-        startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
     }
 
     @Override

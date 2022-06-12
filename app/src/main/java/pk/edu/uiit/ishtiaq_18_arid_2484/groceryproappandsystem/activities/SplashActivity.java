@@ -23,7 +23,6 @@ import pk.edu.uiit.ishtiaq_18_arid_2484.groceryproappandsystem.R;
 public class SplashActivity extends AppCompatActivity {
     // Declaring Splash Activity UI Views
     ImageView splashImage;
-
     // FirebaseAuth
     private FirebaseAuth firebaseAuth;
 
@@ -36,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
-        // Start Login Activity After 4 Seconds
+        // Start Login Activity After 3 Seconds
         splashImage = findViewById(R.id.splashIcon);
         splashImage.animate().scaleX(1.5f).scaleY(1.5f).setDuration(3000);
 
@@ -51,7 +50,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (user==null)
                 {
                     // User Not Logged In Start Login Activity
-                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     finish();
                 }
                 else
